@@ -28,4 +28,62 @@ public class BakedLights {
         light.bake();
         return light;
     }
+
+    public static BakedLight createRectangle(int x, int y, int width, int height, Color color) {
+        BakedLight light = new BakedLight(color, x, y) {
+            @Override
+            public void bake() {
+                createLightMap(-width/2, 0, width/2, height);
+
+                for (int i = getLightMap().getMinX(); i < getLightMap().getMaxX(); i++) {
+                    for (int j = getLightMap().getMinY(); j < getLightMap().getMaxY(); j++) {
+                        int fromTop = getLightMap().getMinY() + j;
+
+                        double alpha = 1.0 - (fromTop - getLightMap().getMinY()) / (double) (getLightMap().getMaxY() - getLightMap().getMinY());
+                        if (alpha > 1.0) alpha = 1.0;
+                        else if (alpha < 0.0) alpha = 0.0;
+
+                        setAlpha(i, j, alpha);
+                    }
+                }
+
+                cache();
+            }
+        };
+
+        light.bake();
+        return light;
+    }
+
+    public static BakedLight createTriangular(int x, int y, int width, int height, Color color) {
+        BakedLight light = new BakedLight(color, x, y) {
+            @Override
+            public void bake() {
+                createLightMap(-width/2, 0, width/2, height);
+
+                for (int i = getLightMap().getMinX(); i < getLightMap().getMaxX(); i++) {
+                    for (int j = getLightMap().getMinY(); j < getLightMap().getMaxY(); j++) {
+                        int fromTop = getLightMap().getMinY() + j;
+                        int fromLeft = - (fromTop/(height/width));
+                        int fromRight = - fromLeft;
+
+                        double alpha = 1.0 - (fromTop - getLightMap().getMinY()) / (double) (getLightMap().getMaxY() - getLightMap().getMinY());
+                        if (alpha > 1.0) alpha = 1.0;
+                        else if (alpha < 0.0) alpha = 0.0;
+
+                        if(i < fromLeft || i > fromRight) {
+                            alpha = 0.0;
+                        }
+
+                        setAlpha(i, j, alpha);
+                    }
+                }
+
+                cache();
+            }
+        };
+
+        light.bake();
+        return light;
+    }
 }

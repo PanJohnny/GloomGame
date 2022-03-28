@@ -19,7 +19,7 @@ public abstract class BakedLight implements Drawable {
     @Getter
     private LightMap lightMap;
 
-    private LoadingCache<Point, Color> cache;
+    private final LoadingCache<Point, Color> cache;
 
     public BakedLight(Color color, int x, int y) {
         this.color = color;
@@ -55,8 +55,6 @@ public abstract class BakedLight implements Drawable {
                 }
             }
         }
-        g.setColor(Color.RED);
-        g.drawRect(x + lightMap.getMinX(), y + lightMap.getMinY(), lightMap.getWidth(), lightMap.getHeight());
     }
 
     /**
