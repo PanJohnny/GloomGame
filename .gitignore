@@ -1,5 +1,4 @@
 # Project exclude paths
 /target/
 
-/LATEST_DUMP.txt
-/data/
+/_DUMP/

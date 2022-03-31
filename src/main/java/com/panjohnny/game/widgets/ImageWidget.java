@@ -1,11 +1,9 @@
 package com.panjohnny.game.widgets;
 
 import com.panjohnny.game.GameObject;
-import com.panjohnny.game.Main;
-import lombok.Data;
+import com.panjohnny.game.GloomGame;
 import lombok.Getter;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -27,7 +25,7 @@ public class ImageWidget extends GameObject {
     public ImageWidget(String path, int width, int height, int x, int y) {
         super(x, y, width, height);
 
-        this.image = Main.getInstance().getImageFetcher().get(path);
+        this.image = GloomGame.getInstance().getImageFetcher().get(path);
         if (width == 0 && height == 0) {
             this.setSize(image.getWidth(), image.getHeight());
         }
@@ -56,7 +54,7 @@ public class ImageWidget extends GameObject {
     }
 
     public void drawLayer(Graphics g, BufferedImage i, int xOffset, int yOffset) {
-        Dimension d = Main.getInstance().getWindow().transformSize(i.getWidth(), i.getHeight());
+        Dimension d = GloomGame.getInstance().getWindow().transformSize(i.getWidth(), i.getHeight());
         g.drawImage(i, getActualPosition().x + xOffset, getActualPosition().y + yOffset, (int) (d.getWidth() * multiplier), (int) (d.getHeight() * multiplier), null);
     }
 }

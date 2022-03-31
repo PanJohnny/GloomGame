@@ -1,6 +1,6 @@
 package com.panjohnny.game.widgets;
 
-import com.panjohnny.game.Main;
+import com.panjohnny.game.GloomGame;
 import com.panjohnny.game.io.Mouse;
 
 import java.awt.*;
@@ -12,7 +12,7 @@ public class SliderWidget extends ImageWidget {
     public SliderWidget(int x, int y) {
         super("/options/slider.png", x, y);
 
-        this.thumb = Main.getInstance().getImageFetcher().get("/options/slider_front.png");
+        this.thumb = GloomGame.getInstance().getImageFetcher().get("/options/slider_front.png");
     }
 
     @Override

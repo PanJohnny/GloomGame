@@ -1,10 +1,12 @@
 package com.panjohnny.game.light;
 
 import com.google.common.cache.LoadingCache;
+import com.panjohnny.game.util.Pair;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 @Getter
 @EqualsAndHashCode
@@ -58,10 +60,10 @@ public class LightMap {
         return Math.abs(minY) + Math.abs(maxY);
     }
 
-    public void cache(LoadingCache<Point, Color> cache) {
-        for (int i = getMinX(); i < getMaxX(); i++) {
-            for (int j = getMinY(); j < getMaxY(); j++) {
-                cache.getUnchecked(new Point(i, j));
+    public void forEach(Consumer<Pair<Point, Double>> consumer) {
+        for(int x = minX; x<=maxX; x++) {
+            for(int y = minY; y<=maxY; y++) {
+                consumer.accept(new Pair<>(new Point(x,y), get(x,y)));
             }
         }
     }

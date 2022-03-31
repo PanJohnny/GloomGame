@@ -7,9 +7,12 @@ import com.panjohnny.game.data.GameDataManager;
 import com.panjohnny.game.event.Event;
 import com.panjohnny.game.event.EventHandler;
 import com.panjohnny.game.event.EventListener;
+import com.panjohnny.game.io.KeyboardEvent;
 import com.panjohnny.game.io.Mouse;
+import com.panjohnny.game.light.BakedLight;
 import com.panjohnny.game.mem.DataFetcher;
 import com.panjohnny.game.mem.ImageFetcher;
+import com.panjohnny.game.render.Drawable;
 import com.panjohnny.game.render.FontRenderer;
 import com.panjohnny.game.render.Renderer;
 import com.panjohnny.game.render.Window;
@@ -24,9 +27,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-public class Main {
-    private static Main instance;
+public class GloomGame {
+    private static GloomGame instance;
 
     private final Thread gameThread;
     private boolean running;
@@ -44,6 +49,7 @@ public class Main {
     private final GameDataManager dataManager;
 
     private final ArrayList<Scene> scenes;
+    @Getter
     private Scene currentScene;
     private boolean currentSceneLoaded = true;
 
@@ -55,7 +61,10 @@ public class Main {
     @Getter
     private final EventHandler eventHandler;
 
-    public Main() {
+    @Getter
+    private Player player;
+
+    public GloomGame() {
         imageFetcher = new ImageFetcher();
         dataFetcher = new DataFetcher();
         eventHandler = new EventHandler();
@@ -85,9 +94,9 @@ public class Main {
                 }
                 if (System.currentTimeMillis() - lastTimer >= 1000) {
                     lastTimer += 1000;
-                    if(Options.DEVELOPER_MODE) {
+                    if (Options.DEVELOPER_MODE) {
                         System.out.printf("FPS: %d, UPS: %d%n", frames, updates);
-                        if(window!=null) {
+                        if (window != null) {
                             window.debug(String.format("FPS: %d, UPS: %d", frames, updates));
                         }
                     }
@@ -112,11 +121,13 @@ public class Main {
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
                 pressKey(e.getKeyCode());
+                getEventHandler().fire(new KeyboardEvent(getClass(), e));
             }
 
             @Override
             public void keyReleased(java.awt.event.KeyEvent e) {
                 releaseKey(e.getKeyCode());
+                getEventHandler().fire(new KeyboardEvent(getClass(), e));
             }
         });
 
@@ -133,12 +144,14 @@ public class Main {
 
     public static void main(String[] args) {
         FlagChecker.check(args);
-        instance = new Main();
+        instance = new GloomGame();
         instance.start();
     }
 
     public synchronized void start() {
         running = true;
+        player = new Player(100, 100);
+        getEventHandler().register(player);
         window.show();
         gameThread.start();
     }
@@ -153,7 +166,7 @@ public class Main {
     }
 
     public void update() {
-        if(!currentSceneLoaded) {
+        if (!currentSceneLoaded) {
             currentScene = scenes.get(sceneIndex).init();
             currentSceneLoaded = true;
         }
@@ -183,7 +196,7 @@ public class Main {
     public void load() {
         FontRenderer.load();
         DataSet data = dataManager.loadFile("/latest_session.json");
-        if(!data.isEmpty()) {
+        if (!data.isEmpty()) {
             window.pushJson(data.getObject("window"));
         }
     }
@@ -196,7 +209,7 @@ public class Main {
         currentScene.onKeyRelease(key);
     }
 
-    public static Main getInstance() {
+    public static GloomGame getInstance() {
         return instance;
     }
 
@@ -213,12 +226,28 @@ public class Main {
         save();
 
         if (Options.DEVELOPER_MODE) {
-            File dump = new File("LATEST_DUMP.txt");
+            // delete all files in the folder ending _DUMP
+            File folder = new File(".");
+            File dumpFolder = new File(folder.getAbsolutePath() + "/_DUMP");
+            if (dumpFolder.exists()) {
+                if(dumpFolder.isDirectory()) {
+                    File[] files = dumpFolder.listFiles();
+                    if(files != null) {
+                        for (File file : files) {
+                            System.out.printf("Deleted %s: %s%n", file.getName(), file.delete());
+                        }
+                    }
+                }
+            } else {
+                boolean a = dumpFolder.mkdirs();
+            }
+            File dump = new File(dumpFolder,"LATEST_DUMP.txt");
             try {
-                if(dump.createNewFile())
-                    System.out.println("Dump file created");
-                System.out.println("Dumping to " + dump.getAbsolutePath());
+                if (dump.createNewFile())
+                    System.out.println("Main dump file created");
             } catch (IOException ignored) {
+                System.err.println("Failed to create dump file");
+                return;
             }
 
             try {
@@ -260,7 +289,20 @@ public class Main {
                 });
 
                 writer.append("\n\n----- END -----");
+                String[] randomSentences = new String[]{
+                        "I hope you enjoyed this dump",
+                        "Ducks are awesome",
+                        "Never gonna give you up",
+                        "Good luck",
+                        "I'm a dump",
+                        "Beep boop",
+                        "Beep beep I'm a dump",
+                        "Hello awesome!"
+                };
+                writer.append("\n\n").append(randomSentences[new Random().nextInt(randomSentences.length)]);
                 writer.flush();
+
+                System.out.println("Dump finished");
             } catch (IOException e) {
                 e.printStackTrace();
             }

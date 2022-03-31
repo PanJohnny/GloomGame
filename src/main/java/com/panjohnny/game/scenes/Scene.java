@@ -4,12 +4,15 @@ import com.panjohnny.game.GameObject;
 import com.panjohnny.game.render.Drawable;
 import com.panjohnny.game.render.Renderer;
 import com.panjohnny.game.widgets.InteractionWidget;
+import lombok.Getter;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Scene {
+    @Getter
     private final LinkedList<Drawable> drawables = new LinkedList<>();
+    @Getter
     private final LinkedList<GameObject> objects = new LinkedList<>();
 
     public abstract Scene init();

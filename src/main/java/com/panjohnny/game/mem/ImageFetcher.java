@@ -3,6 +3,7 @@ package com.panjohnny.game.mem;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.panjohnny.game.render.AnimatedTexture;
 import lombok.NonNull;
 
 import javax.imageio.ImageIO;
@@ -42,6 +43,12 @@ public class ImageFetcher {
 
     public void invalidateAll() {
         cache.invalidateAll();
+    }
+
+    public AnimatedTexture getAnimation(String key, int rows, int cols, long timeBetweenFrames) {
+        BufferedImage image = get(key);
+
+        return new AnimatedTexture(image, rows, cols, timeBetweenFrames);
     }
 
     public LoadingCache<String, BufferedImage> getCache() {

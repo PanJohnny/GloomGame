@@ -1,6 +1,6 @@
 package com.panjohnny.game.scenes;
 
-import com.panjohnny.game.Main;
+import com.panjohnny.game.GloomGame;
 import lombok.Getter;
 
 public class FiledScene extends Scene {
@@ -12,7 +12,7 @@ public class FiledScene extends Scene {
     @Override
     public FiledScene init() {
         // load the scene from inner file in /scenes/name.json
-        Main.getInstance().getDataFetcher().get("/scenes/%s.json".formatted(this.name));
+        GloomGame.getInstance().getDataFetcher().get("/scenes/%s.json".formatted(this.name));
         return this;
     }
 

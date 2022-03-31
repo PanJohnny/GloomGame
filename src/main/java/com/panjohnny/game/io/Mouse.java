@@ -1,6 +1,6 @@
 package com.panjohnny.game.io;
 
-import com.panjohnny.game.Main;
+import com.panjohnny.game.GloomGame;
 import lombok.Getter;
 
 import java.awt.event.MouseEvent;
@@ -11,8 +11,8 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
     private static Mouse instance;
 
-    public static void init(Main main) {
-        instance = new Mouse(main);
+    public static void init(GloomGame gloomGame) {
+        instance = new Mouse(gloomGame);
     }
 
     public static Mouse getInstance() {
@@ -28,15 +28,15 @@ public class Mouse implements MouseListener, MouseMotionListener {
     @Getter
     private boolean buttonLeftDown, buttonRightDown, buttonMiddleDown;
 
-    public Mouse(Main main) {
-        main.getRenderer().addMouseListener(this);
+    public Mouse(GloomGame gloomGame) {
+        gloomGame.getRenderer().addMouseListener(this);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         syncPos(e);
 
-        Main.fireEvent(new MouseClickEvent(e));
+        GloomGame.fireEvent(new MouseClickEvent(e));
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.panjohnny.game;
 
 import com.panjohnny.game.render.Drawable;
-import com.panjohnny.game.render.Window;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,11 +35,11 @@ public abstract class GameObject implements Drawable {
     public abstract void tick();
 
     public Dimension getActualSize() {
-        return Main.getInstance().getWindow().transformSize(width, height);
+        return GloomGame.getInstance().getWindow().transformSize(width, height);
     }
 
     public Point getActualPosition() {
-        return Main.getInstance().getWindow().transformPos(x, y);
+        return GloomGame.getInstance().getWindow().transformPos(x, y);
     }
 
     protected void setSize(int width, int height) {

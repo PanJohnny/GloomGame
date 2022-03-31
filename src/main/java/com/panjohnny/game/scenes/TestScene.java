@@ -1,23 +1,25 @@
 package com.panjohnny.game.scenes;
 
-import com.panjohnny.game.Main;
+import com.panjohnny.game.GloomGame;
 import com.panjohnny.game.light.BakedLights;
+import com.panjohnny.game.light.Bulb;
 import com.panjohnny.game.render.Colors;
+import com.panjohnny.game.tile.Tile;
+import com.panjohnny.game.widgets.TextWidget;
 
 import java.awt.*;
 
 public class TestScene extends Scene{
     @Override
     public Scene init() {
-        Main.getInstance().getRenderer().setBackground(Color.BLACK);
-        //addDrawable(BakedLights.createRounded(400, 400, 10, Colors.YELLOW));
-        addDrawable(BakedLights.createTriangular(300, 10, 100, 200, Colors.YELLOW));
-        addDrawable(BakedLights.createTriangular(500, 10, 100, 200, Colors.RED));
-        addDrawable(BakedLights.createRectangle(500, 400, 100, 200, Colors.RED));
-        addDrawable(BakedLights.createRectangle(300, 400, 100, 200, Colors.YELLOW));
+        GloomGame.getInstance().getRenderer().setBackground(Color.BLACK);
+        add(new TextWidget(100, 100, "This is just test scene", Colors.YELLOW, 60));
 
-        addDrawable(BakedLights.createRounded(500, 700, 100, Colors.RED));
-        addDrawable(BakedLights.createRounded(300, 700, 100, Colors.YELLOW));
+//        add(GloomGame.getInstance().getPlayer());
+//        add(new Tile(0, 200, 640, 640));
+
+        add(BakedLights.createRounded(400, 100, 200, Colors.YELLOW));
+        add(BakedLights.createRounded(700, 100, 200, Colors.RED));
         return this;
     }
 

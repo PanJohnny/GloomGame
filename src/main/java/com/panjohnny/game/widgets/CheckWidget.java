@@ -1,6 +1,6 @@
 package com.panjohnny.game.widgets;
 
-import com.panjohnny.game.Main;
+import com.panjohnny.game.GloomGame;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -11,7 +11,7 @@ public class CheckWidget extends ClickableImageWidget{
     public CheckWidget(int x, int y) {
         super("/options/check_bg.png", x, y);
 
-        this.tick = Main.getInstance().getImageFetcher().get("/options/check_tick.png");
+        this.tick = GloomGame.getInstance().getImageFetcher().get("/options/check_tick.png");
     }
 
     @Override

@@ -1,0 +1,66 @@
+package com.panjohnny.game.render;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+public class AnimatedTexture {
+    private final BufferedImage image;
+    private final int collumns;
+    private final int rows;
+    private int currentFrame;
+
+    private final List<BufferedImage> frames;
+    // in MS
+    private final long timeBetweenFrames;
+    private long lastTime;
+    public AnimatedTexture(BufferedImage image, int collumns, int rows, long timeBetweenFrames) {
+        this.image = image;
+        this.collumns = collumns;
+        this.rows = rows;
+        int width = image.getWidth() / collumns;
+        int height = image.getHeight() / rows;
+
+        frames = new ArrayList<>();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < collumns; j++) {
+                frames.add(image.getSubimage(j * width, i * height, width, height));
+            }
+        }
+
+        this.timeBetweenFrames = timeBetweenFrames;
+        lastTime = System.nanoTime();
+    }
+    public void next() {
+        currentFrame++;
+        if (currentFrame >= frames.size()) {
+            currentFrame = 0;
+        }
+    }
+
+    public void update() {
+        if(System.nanoTime() - lastTime > timeBetweenFrames * 1000000) {
+            next();
+            lastTime = System.nanoTime();
+        }
+    }
+
+    public BufferedImage getCurrentFrame() {
+        return frames.get(currentFrame);
+    }
+
+    public AnimatedTexture getCopyFlippedHorizontally() {
+        BufferedImage flipped = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-image.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        op.filter(image, flipped);
+        return new AnimatedTexture(flipped, collumns, rows, timeBetweenFrames);
+    }
+}

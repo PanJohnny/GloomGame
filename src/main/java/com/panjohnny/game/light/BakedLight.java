@@ -3,14 +3,16 @@ package com.panjohnny.game.light;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.panjohnny.game.GameObject;
 import com.panjohnny.game.render.Drawable;
 import lombok.Getter;
 import lombok.NonNull;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutionException;
 
-public abstract class BakedLight implements Drawable {
+public abstract class BakedLight extends GameObject {
     @Getter
     private final Color color;
     @Getter
@@ -19,42 +21,26 @@ public abstract class BakedLight implements Drawable {
     @Getter
     private LightMap lightMap;
 
-    private final LoadingCache<Point, Color> cache;
+    @Getter
+    private BufferedImage image;
 
     public BakedLight(Color color, int x, int y) {
+        super(x, y, 0,0);
         this.color = color;
         this.x = x;
         this.y = y;
-
-        CacheLoader<Point, Color> loader = new CacheLoader<>() {
-            @Override
-            @NonNull
-            public Color load(@NonNull Point point) throws Exception {
-                // if point is out of bounds return 0
-                if (lightMap.isOutOfBounds(point.x, point.y)) {
-                    // return color with 0 alpha
-                    return new Color(color.getRed(), color.getGreen(), color.getBlue(), 0);
-                }
-                // return color with alpha based on lightMap
-                return new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (lightMap.get(point.x, point.y) * 255));
-            }
-        };
-
-        cache = CacheBuilder.newBuilder().build(loader);
     }
 
     @Override
     public void draw(Graphics g) {
-        for (int x = lightMap.getMinX(); x < lightMap.getMaxX(); x++) {
-            for (int y = lightMap.getMinY(); y < lightMap.getMaxY(); y++) {
-                try {
-                    g.setColor(cache.get(new Point(x, y)));
-                    g.fillRect(x + this.x, y + this.y, 1, 1);
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+        if(image != null) {
+            g.drawImage(image, x, y, null);
         }
+    }
+
+    @Override
+    public void tick() {
+
     }
 
     /**
@@ -63,8 +49,20 @@ public abstract class BakedLight implements Drawable {
     public abstract void bake();
 
     public void cache() {
-        // loop through lightMap and cache all values
-        lightMap.cache(cache);
+        image = new BufferedImage(lightMap.getWidth(), lightMap.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g = image.getGraphics();
+        lightMap.forEach((p -> {
+            g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (p.second() * 255)));
+            g.fillRect(p.first().x, p.first().y, 1, 1);
+        }));
+        g.dispose();
+
+        setWidth(lightMap.getWidth());
+        setHeight(lightMap.getHeight());
+    }
+
+    public void create() {
+
     }
 
     public void createLightMap(int minX, int minY, int maxX, int maxY) {
