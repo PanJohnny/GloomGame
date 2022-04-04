@@ -9,10 +9,8 @@ import com.panjohnny.game.event.EventHandler;
 import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.io.KeyboardEvent;
 import com.panjohnny.game.io.Mouse;
-import com.panjohnny.game.light.BakedLight;
 import com.panjohnny.game.mem.DataFetcher;
 import com.panjohnny.game.mem.ImageFetcher;
-import com.panjohnny.game.render.Drawable;
 import com.panjohnny.game.render.FontRenderer;
 import com.panjohnny.game.render.Renderer;
 import com.panjohnny.game.render.Window;
@@ -27,7 +25,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GloomGame {
@@ -239,7 +236,9 @@ public class GloomGame {
                     }
                 }
             } else {
-                boolean a = dumpFolder.mkdirs();
+                if(!dumpFolder.mkdirs()) {
+                    System.err.println("Failed to create dump folder");
+                }
             }
             File dump = new File(dumpFolder,"LATEST_DUMP.txt");
             try {
