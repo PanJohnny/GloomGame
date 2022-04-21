@@ -15,11 +15,16 @@ public interface EventListener {
     HashMap<Class<? extends Event<?>>, List<MethodHandle>> methodHandles = new HashMap<>();
 
     default void dispatchEvent(Event<?> event) {
+        if (!methodHandles.containsKey(event.getClass())) {
+            return;
+        }
         List<MethodHandle> hand = this.methodHandles.get(event.getClass());
         if (hand != null) {
             for (MethodHandle methodHandle : hand) {
                 try {
-                    methodHandle.invoke(this, event);
+                    // this is done to avoid class cast exceptions IDK why, but it works
+                    if(methodHandle.toString().contains(this.getClass().getSimpleName()))
+                        methodHandle.invoke(this, event);
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
@@ -32,12 +37,12 @@ public interface EventListener {
         for (Method m : Arrays.stream(this.getClass().getMethods()).filter(m -> m.isAnnotationPresent(EventTarget.class)).toList()) {
             try {
                 Class<? extends Event<?>> target = m.getAnnotation(EventTarget.class).target();
-                MethodHandle mh = MethodHandles.lookup().findVirtual(this.getClass(), m.getName(), MethodType.methodType(void.class, target));
+                MethodHandle mh = MethodHandles.lookup().unreflect(m);
                 if (!methodHandles.containsKey(target)) {
                     methodHandles.put(m.getAnnotation(EventTarget.class).target(), new ArrayList<>());
                 }
                 methodHandles.get(target).add(mh);
-            } catch (NoSuchMethodException | IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 System.err.println("Failed to cache method: " + m.getName() + " for " + this.getClass().getSimpleName());
                 e.printStackTrace();
             }

@@ -4,15 +4,18 @@ import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.event.EventTarget;
 import com.panjohnny.game.io.KeyboardEvent;
 import com.panjohnny.game.render.AnimatedTexture;
+import com.panjohnny.game.util.Timer;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
+import static com.panjohnny.game.io.KeyManager.*;
 
 public class Player extends GameObject implements EventListener {
     private final AnimatedTexture front;
     private final AnimatedTexture runR, runL;
+
+    private final Timer<Player> jumpTimer;
 
     public Player(int x, int y) {
         super(x, y, 32, 64);
@@ -21,23 +24,34 @@ public class Player extends GameObject implements EventListener {
         runR = runL.getCopyFlippedHorizontally();
 
         run = runL;
+        jumpTimer = Timer.createDummyTimer((a) -> a.setJumping(false), 300L);
     }
 
     private Point temp_pos;
     private Dimension temp_size;
     private boolean moving = false;
-    private AnimatedTexture run, jump;
+    private AnimatedTexture run;
 
     @Setter
     private boolean onGround = false;
+
+    @Getter
+    @Setter
+    private boolean jumping = false;
 
     @Override
     public void tick() {
         temp_pos = getActualPosition();
         temp_size = getActualSize();
 
-        if(!onGround)
+        jumpTimer.tick(this);
+
+        if(jumping)
+            velY = -2;
+
+        if(!onGround && !jumping) {
             velY = 5;
+        }
 
         setX(getX() + velX);
         setY(getY() + velY);
@@ -78,16 +92,25 @@ public class Player extends GameObject implements EventListener {
     @EventTarget(target = KeyboardEvent.class)
     public void onKeyboardEvent(KeyboardEvent e) {
         if (e.isKeyDown()) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP -> velY = -1;
-                case KeyEvent.VK_DOWN -> velY = 1;
-                case KeyEvent.VK_LEFT -> velX = -1;
-                case KeyEvent.VK_RIGHT -> velX = 1;
+            if (isOf(JUMP_KEYS, e.getKeyCode())) {
+                if (onGround) {
+                    jumping = true;
+                    jumpTimer.reset();
+                }
+            }
+            if (isOf(MOVE_LEFT_KEYS, e.getKeyCode())) {
+                velX = -1;
+            } else if (isOf(MOVE_RIGHT_KEYS, e.getKeyCode())) {
+                velX = 1;
             }
         } else {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP, KeyEvent.VK_DOWN -> velY = 0;
-                case KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT -> velX = 0;
+            if (isOf(MOVE_LEFT_KEYS, e.getKeyCode()) || isOf(MOVE_RIGHT_KEYS, e.getKeyCode())) {
+                velX = 0;
+            }
+
+            if (isOf(JUMP_KEYS, e.getKeyCode())) {
+                jumping = false;
+                jumpTimer.stop();
             }
         }
     }

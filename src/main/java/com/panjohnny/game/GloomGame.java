@@ -249,8 +249,7 @@ public class GloomGame {
                 return;
             }
 
-            try {
-                FileWriter writer = new FileWriter(dump);
+            try (FileWriter writer = new FileWriter(dump)){
 
                 writer.append("----- CACHED DATA -----\n");
                 dataFetcher.getCache().asMap().forEach((k, v) -> {
@@ -296,7 +295,35 @@ public class GloomGame {
                         "I'm a dump",
                         "Beep boop",
                         "Beep beep I'm a dump",
-                        "Hello awesome!"
+                        "Hello awesome!",
+                        "Nothin' to see here",
+                        "Your mom is a dump",
+                        "42 is the answer to life, the universe and everything",
+                        "(╯°□°）╯︵ ┻━┻",
+                        "/╲/\\╭(°□°)╮/\\╱\\",
+                        "┻━┻ ︵ヽ(`Д´)ﾉ︵ ┻━┻",
+                        "┻━┻ ︵ ╯︵╰(°□°)╯︵ ┻━┻",
+                        "(O_o)",
+                        "┬─┬ノ( º _ ºノ)",
+                        "Feelin' good",
+                        "Shit happens",
+                        "You should probably stop and take a dump 💩",
+                        "Try rubber ducking",
+                        "Imagination is the best",
+                        "I am writing these instead of doing something productive",
+                        "I am dumb",
+                        "gloom_original.ttf is a great font",
+                        "╚(•⌂•)╝",
+                        "╚(⌂⌂)╝",
+                        "╚(⌂⌂⌂⌂⌂)╝",
+                        "╚(⌂⌂⌂⌂⌂⌂⌂)╝",
+                        "Github copilot is a great guy",
+                        "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaah",
+                        "Help me",
+                        "This code is literally trash",
+                        "Are you gloomy?",
+                        "Piss off",
+                        "\uD83D\uDE2D"
                 };
                 writer.append("\n\n").append(randomSentences[new Random().nextInt(randomSentences.length)]);
                 writer.flush();

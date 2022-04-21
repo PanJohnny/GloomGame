@@ -12,6 +12,7 @@ public class CheckWidget extends ClickableImageWidget{
         super("/options/check_bg.png", x, y);
 
         this.tick = GloomGame.getInstance().getImageFetcher().get("/options/check_tick.png");
+        setOnClick(this::tick);
     }
 
     @Override
@@ -19,12 +20,13 @@ public class CheckWidget extends ClickableImageWidget{
         super.draw(g);
 
         if(checked) {
-            drawLayer(g, tick, 0, 0);
+            drawLayer(g, tick, 10, 10);
+            System.out.println("drawing tick");
         }
     }
 
-    @Override
-    public void onInteract(Object context) {
+    public void tick(Object o) {
         checked = !checked;
+        System.out.println("checked = " + checked);
     }
 }
