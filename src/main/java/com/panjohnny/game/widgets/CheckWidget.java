@@ -20,7 +20,7 @@ public class CheckWidget extends ClickableImageWidget{
         super.draw(g);
 
         if(checked) {
-            drawLayer(g, tick, 10, 10);
+            drawLayer(g, tick, 0, 0);
             System.out.println("drawing tick");
         }
     }
