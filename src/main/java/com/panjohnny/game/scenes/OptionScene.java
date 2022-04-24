@@ -15,7 +15,7 @@ public class OptionScene extends Scene implements EventListener {
         GloomGame.registerEventListener(this);
         add(new SliderWidget(10, 100).multiplySize(2));
         add(new CheckWidget(10, 200));
-        add(new TextWidget(400, 100, "wavta", Colors.YELLOW, 40));
+        add(TextWidget.translated(400, 100, "test", Colors.YELLOW, 40));
         return this;
     }
 

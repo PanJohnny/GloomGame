@@ -4,9 +4,12 @@ import com.panjohnny.game.GameObject;
 import com.panjohnny.game.GloomGame;
 import com.panjohnny.game.io.Mouse;
 import com.panjohnny.game.render.Drawable;
+import com.panjohnny.game.widgets.ButtonWidget;
 import com.panjohnny.game.widgets.ClickableImageWidget;
 import com.panjohnny.game.widgets.ImageWidget;
 import com.panjohnny.game.widgets.WidgetUtil;
+
+import java.awt.*;
 
 public class MainMenu extends Scene {
     @Override
@@ -26,10 +29,16 @@ public class MainMenu extends Scene {
             System.exit(0);
         });
 
+        ButtonWidget test = new ButtonWidget(370, 400, (b) -> System.out.println("test"), (buttonWidgetGraphicsPair -> {
+            buttonWidgetGraphicsPair.second().setColor(Color.cyan);
+            buttonWidgetGraphicsPair.second().fillRect(0, 0, 100, 100);
+        }), "Play").multiplySize(2);
+
         add(logo);
         add(play);
         add(options);
         add(exit);
+        add(test);
         return this;
     }
 

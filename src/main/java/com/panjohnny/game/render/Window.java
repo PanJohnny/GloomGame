@@ -102,4 +102,8 @@ public class Window implements Jsonable {
             frame.setLocation(object.get("posX").getAsInt(), object.get("posY").getAsInt());
         }
     }
+
+    public float multiply(float original) {
+        return original *((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
+    }
 }

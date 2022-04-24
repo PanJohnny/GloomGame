@@ -1,6 +1,7 @@
 package com.panjohnny.game.widgets;
 
 import com.panjohnny.game.GameObject;
+import com.panjohnny.game.data.Translator;
 import com.panjohnny.game.render.FontRenderer;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,10 @@ public class TextWidget extends GameObject {
         this.color = color;
         this.size = size;
         this.text = text;
+    }
+
+    public static TextWidget translated(int x, int y, String key, Color color, int size) {
+        return new TextWidget(x, y, Translator.translate(key), color, size);
     }
 
     @Override

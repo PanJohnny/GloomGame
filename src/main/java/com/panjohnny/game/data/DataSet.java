@@ -7,15 +7,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class DataSet {
-    private JsonObject data;
-    public DataSet(JsonObject data) {
-        this.data = data;
-    }
-
-    public JsonObject getData() {
-        return data;
-    }
+public record DataSet(JsonObject data) {
 
     public String getString(String key) {
         return data.get(key).getAsString();
@@ -55,5 +47,9 @@ public class DataSet {
 
     public boolean isEmpty() {
         return data.entrySet().isEmpty();
+    }
+
+    public boolean containsKey(String key) {
+        return data.has(key);
     }
 }

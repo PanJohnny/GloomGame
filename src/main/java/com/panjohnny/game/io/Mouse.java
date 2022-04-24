@@ -30,6 +30,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
     public Mouse(GloomGame gloomGame) {
         gloomGame.getRenderer().addMouseListener(this);
+        gloomGame.getRenderer().addMouseMotionListener(this);
     }
 
     @Override

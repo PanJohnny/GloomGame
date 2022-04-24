@@ -1,0 +1,9 @@
+{
+  "name": "American English",
+  "code": "en_us",
+  "authors": [
+    "PanJohnny"
+  ],
+  "version": "alpha 1.0",
+  "test": "test scene"
+}

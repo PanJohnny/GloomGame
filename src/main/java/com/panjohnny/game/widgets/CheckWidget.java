@@ -27,6 +27,5 @@ public class CheckWidget extends ClickableImageWidget{
 
     public void tick(Object o) {
         checked = !checked;
-        System.out.println("checked = " + checked);
     }
 }
