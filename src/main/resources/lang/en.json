@@ -5,5 +5,9 @@
     "PanJohnny"
   ],
   "version": "alpha 1.0",
-  "test": "test scene"
+  "menu.options": "Options",
+  "btn.play": "Play",
+  "btn.options": "Options",
+  "btn.quit": "Quit",
+  "btn.back": "Back"
 }

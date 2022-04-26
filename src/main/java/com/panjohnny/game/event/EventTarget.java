@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EventTarget {
-    Class<? extends Event<?>> target();
+    Class<? extends Event<?>> value();
 }

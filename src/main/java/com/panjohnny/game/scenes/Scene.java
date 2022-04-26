@@ -47,9 +47,6 @@ public abstract class Scene {
         Renderer.getInstance().render(drawables);
     }
 
-    public abstract void onKeyPress(int key);
-    public abstract void onKeyRelease(int key);
-
     public List<Drawable> getOfType(Class<?> type) {
         List<Drawable> result = new LinkedList<>();
         for (Drawable drawable : drawables) {

@@ -2,6 +2,7 @@ package com.panjohnny.game.scenes;
 
 import com.panjohnny.game.GameObject;
 import com.panjohnny.game.GloomGame;
+import com.panjohnny.game.data.Translator;
 import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.event.EventTarget;
 import com.panjohnny.game.io.MouseClickEvent;
@@ -15,18 +16,11 @@ public class OptionScene extends Scene implements EventListener {
         GloomGame.registerEventListener(this);
         add(new SliderWidget(10, 100).multiplySize(2));
         add(new CheckWidget(10, 200));
-        add(TextWidget.translated(400, 100, "test", Colors.YELLOW, 40));
+        add(TextWidget.translated(400, 50, "menu.options", Colors.YELLOW, 100));
+        ButtonWidget back = new ButtonWidget(370, 400, (b) -> GloomGame.getInstance().setScene(0), pair -> ButtonWidget.overlay(pair, Colors.alpha(Colors.RED, 0.2f)), Translator.translate("btn.back")).multiplySize(2);
+        add(back);
+
         return this;
-    }
-
-    @Override
-    public void onKeyPress(int key) {
-
-    }
-
-    @Override
-    public void onKeyRelease(int key) {
-
     }
 
     @Override
@@ -34,10 +28,10 @@ public class OptionScene extends Scene implements EventListener {
         super.update();
     }
 
-    @EventTarget(target = MouseClickEvent.class)
+    @EventTarget(MouseClickEvent.class)
     public void click(MouseClickEvent event) {
         if(event.isLeftClick()) {
-            for (Drawable d : getOfType(CheckWidget.class)) {
+            for (Drawable d : getOfType(ClickableImageWidget.class)) {
                 if(WidgetUtil.isMouseOver((GameObject) d)){
                     ClickableImageWidget ciw = (ClickableImageWidget) d;
                     ciw.onInteract(ciw);

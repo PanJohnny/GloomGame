@@ -1,11 +1,8 @@
 package com.panjohnny.game.data;
 
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonWriter;
 import lombok.NonNull;
 
 import java.io.*;
@@ -37,7 +34,7 @@ public class GameDataManager {
         }
 
         // create FileReader and read it as Json (use Gson)
-        JsonElement jsonElement = null;
+        JsonElement jsonElement;
         try {
             jsonElement = JsonParser.parseReader(new FileReader(file));
         } catch (FileNotFoundException e) {
@@ -71,7 +68,35 @@ public class GameDataManager {
 
         // create FileWriter and write it as Json (use Gson)
         try(FileWriter fw = new FileWriter(file)) {
-            fw.write(dataSet.getData().toString());
+            fw.write(dataSet.data().toString());
+            fw.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeFile(String fileName, String content) {
+        // get the file in current folder in /data/%fileName% format if dir or file does not exist create it if that is not possible throw RuntimeException
+        File file = new File("data/" + fileName);
+
+        if(!file.exists()) {
+            // get parent dir
+            File parentDir = file.getParentFile();
+            if(!parentDir.exists() && !parentDir.mkdirs()) {
+                throw new RuntimeException("Could not create directory " + parentDir.getAbsolutePath());
+            }
+            try {
+                if(!file.createNewFile()) {
+                    throw new RuntimeException("Could not create file " + file.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create file " + file.getAbsolutePath(), e);
+            }
+        }
+
+        // create FileWriter and write it as Json (use Gson)
+        try(FileWriter fw = new FileWriter(file)) {
+            fw.write(content);
             fw.flush();
         } catch (IOException e) {
             e.printStackTrace();

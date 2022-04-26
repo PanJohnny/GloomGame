@@ -31,7 +31,7 @@ public class ButtonWidget extends ClickableImageWidget{
         Point p = getActualPosition();
         Dimension d = getActualSize();
         // Draw text centered on the button using FontRenderer
-        FontRenderer.drawCenteredText(text, (int) ((d.height / 2) - GloomGame.getInstance().getWindow().multiply(text.length() * 1.2f)), p.x, p.y, Colors.YELLOW, g, d);
+        FontRenderer.drawCenteredText(text, (int) ((d.height / 2) - GloomGame.getInstance().getWindow().multiply(text.length() * .5f)), p.x, p.y, Colors.YELLOW, g, d);
         if(WidgetUtil.isMouseOver(this)) {
             onHover.accept(new Pair<>(this, g));
         }
@@ -40,5 +40,12 @@ public class ButtonWidget extends ClickableImageWidget{
     @Override
     public ButtonWidget multiplySize(double scale) {
         return (ButtonWidget) super.multiplySize(scale);
+    }
+
+    public static void overlay(Pair<ButtonWidget, Graphics> pair, Color color) {
+        Graphics g = pair.second();
+        ButtonWidget w = pair.first();
+        g.setColor(color);
+        g.fillRect(w.getActualPosition().x, w.getActualPosition().y, w.getActualSize().width, w.getActualSize().height);
     }
 }

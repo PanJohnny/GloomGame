@@ -45,7 +45,7 @@ public class ImageWidget extends GameObject {
         g.drawImage(image, getActualPosition().x, getActualPosition().y, getActualSize().width, getActualSize().height, null);
     }
 
-    private double multiplier = 0;
+    private double multiplier = 1.0D;
 
     public ImageWidget multiplySize(double multiplier) {
         this.setSize((int) (getWidth() * multiplier), (int) (getHeight() * multiplier));

@@ -89,7 +89,7 @@ public class Player extends GameObject implements EventListener {
     @Setter
     private int velX = 0, velY = 0;
 
-    @EventTarget(target = KeyboardEvent.class)
+    @EventTarget(KeyboardEvent.class)
     public void onKeyboardEvent(KeyboardEvent e) {
         if (e.isKeyDown()) {
             if (isOf(JUMP_KEYS, e.getKeyCode())) {

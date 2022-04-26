@@ -36,10 +36,10 @@ public interface EventListener {
     default void cache() {
         for (Method m : Arrays.stream(this.getClass().getMethods()).filter(m -> m.isAnnotationPresent(EventTarget.class)).toList()) {
             try {
-                Class<? extends Event<?>> target = m.getAnnotation(EventTarget.class).target();
+                Class<? extends Event<?>> target = m.getAnnotation(EventTarget.class).value();
                 MethodHandle mh = MethodHandles.lookup().unreflect(m);
                 if (!methodHandles.containsKey(target)) {
-                    methodHandles.put(m.getAnnotation(EventTarget.class).target(), new ArrayList<>());
+                    methodHandles.put(m.getAnnotation(EventTarget.class).value(), new ArrayList<>());
                 }
                 methodHandles.get(target).add(mh);
             } catch (IllegalAccessException e) {

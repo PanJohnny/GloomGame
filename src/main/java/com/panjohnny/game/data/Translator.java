@@ -9,6 +9,10 @@ public final class Translator {
     private static JsonObject currentLang = DEFAULT;
     public static String translate(String key) {
         if(!currentLang.has(key)) {
+            if(!DEFAULT.has(key)) {
+                System.err.println("Missing translation for key: " + key);
+                return key;
+            }
             return DEFAULT.get(key).getAsString();
         }
         return currentLang.get(key).getAsString();

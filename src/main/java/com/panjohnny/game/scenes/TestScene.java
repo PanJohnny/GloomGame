@@ -1,8 +1,6 @@
 package com.panjohnny.game.scenes;
 
 import com.panjohnny.game.GloomGame;
-import com.panjohnny.game.light.BakedLight;
-import com.panjohnny.game.light.BakedLights;
 import com.panjohnny.game.render.Colors;
 import com.panjohnny.game.tile.Tile;
 import com.panjohnny.game.widgets.TextWidget;
@@ -19,15 +17,5 @@ public class TestScene extends Scene {
         add(new Tile(0, 200, 640, 640));
 
         return this;
-    }
-
-    @Override
-    public void onKeyPress(int key) {
-
-    }
-
-    @Override
-    public void onKeyRelease(int key) {
-
     }
 }

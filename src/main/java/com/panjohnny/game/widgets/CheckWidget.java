@@ -1,6 +1,8 @@
 package com.panjohnny.game.widgets;
 
 import com.panjohnny.game.GloomGame;
+import com.panjohnny.game.render.Colors;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -21,7 +23,6 @@ public class CheckWidget extends ClickableImageWidget{
 
         if(checked) {
             drawLayer(g, tick, 0, 0);
-            System.out.println("drawing tick");
         }
     }
 

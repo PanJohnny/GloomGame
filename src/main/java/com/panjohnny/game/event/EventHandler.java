@@ -9,6 +9,8 @@ public class EventHandler {
     private final LinkedList<EventListener> listeners = new LinkedList<>();
 
     public void register(EventListener listener) {
+        if(listeners.contains(listener))
+            return;
         listeners.add(listener);
         listener.cache();
     }

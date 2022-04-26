@@ -16,13 +16,4 @@ public class FiledScene extends Scene {
         return this;
     }
 
-    @Override
-    public void onKeyPress(int key) {
-
-    }
-
-    @Override
-    public void onKeyRelease(int key) {
-
-    }
 }

@@ -25,7 +25,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
+
+import static java.lang.System.Logger.Level.DEBUG;
 
 public class GloomGame {
     private static GloomGame instance;
@@ -62,11 +66,48 @@ public class GloomGame {
     private Player player;
 
     public GloomGame() {
+        this.dataManager = new GameDataManager();
         imageFetcher = new ImageFetcher();
         dataFetcher = new DataFetcher();
         eventHandler = new EventHandler();
         scenes = new ArrayList<>();
         gameThread = new Thread(() -> {
+            Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+                System.err.println("Uncaught exception in thread " + t.getName());
+                e.printStackTrace();
+                StringBuilder sb = new StringBuilder();
+                sb.append("---------- UNCAUGHT EXCEPTION ----------\n");
+                sb.append("// This information is important for developers.\n");
+                sb.append("Version: ").append(getClass().getPackage().getImplementationVersion()).append("\n");
+                sb.append("Thread: ").append(t.getName()).append("\n");
+                sb.append("Message: ").append(e.getMessage()).append("\n");
+                sb.append("Cause: ").append(e.getCause()).append("\n");
+                sb.append("Stacktrace:\n");
+                for (StackTraceElement ste : e.getStackTrace()) {
+                    sb.append(ste.toString()).append("\n");
+                }
+                sb.append("----\n\n");
+
+                // print system properties
+                sb.append("---------- SYSTEM PROPERTIES ----------\n");
+                Properties props = System.getProperties();
+                // print os, java version, and os version
+                sb.append("OS: ").append(System.getProperty("os.name")).append("\n");
+                sb.append("Java version: ").append(System.getProperty("java.version")).append("\n");
+                sb.append("OS version: ").append(System.getProperty("os.version")).append("\n");
+                sb.append("----\n\n");
+                // print flags that program was started with
+                sb.append("---------- ARGUMENTS ----------\n");
+                for (String arg : FlagChecker.flags) {
+                    sb.append(arg).append("\n");
+                }
+                sb.append("----\n\n");
+                // append something wholesome to the end of the file
+                sb.append("Error happens :sadge:");
+
+                dataManager.writeFile("error.log", sb.toString());
+                System.exit(1);
+            });
             running = true;
             long lastTime = System.nanoTime();
             double nsPerFrame = 1000000000D / Options.MAX_FPS;
@@ -117,18 +158,14 @@ public class GloomGame {
 
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
-                pressKey(e.getKeyCode());
                 getEventHandler().fire(new KeyboardEvent(getClass(), e));
             }
 
             @Override
             public void keyReleased(java.awt.event.KeyEvent e) {
-                releaseKey(e.getKeyCode());
                 getEventHandler().fire(new KeyboardEvent(getClass(), e));
             }
         });
-
-        this.dataManager = new GameDataManager();
 
         load();
 
@@ -198,14 +235,6 @@ public class GloomGame {
         }
     }
 
-    public void pressKey(int key) {
-        currentScene.onKeyPress(key);
-    }
-
-    public void releaseKey(int key) {
-        currentScene.onKeyRelease(key);
-    }
-
     public static GloomGame getInstance() {
         return instance;
     }
@@ -227,20 +256,20 @@ public class GloomGame {
             File folder = new File(".");
             File dumpFolder = new File(folder.getAbsolutePath() + "/_DUMP");
             if (dumpFolder.exists()) {
-                if(dumpFolder.isDirectory()) {
+                if (dumpFolder.isDirectory()) {
                     File[] files = dumpFolder.listFiles();
-                    if(files != null) {
+                    if (files != null) {
                         for (File file : files) {
                             System.out.printf("Deleted %s: %s%n", file.getName(), file.delete());
                         }
                     }
                 }
             } else {
-                if(!dumpFolder.mkdirs()) {
+                if (!dumpFolder.mkdirs()) {
                     System.err.println("Failed to create dump folder");
                 }
             }
-            File dump = new File(dumpFolder,"LATEST_DUMP.txt");
+            File dump = new File(dumpFolder, "LATEST_DUMP.txt");
             try {
                 if (dump.createNewFile())
                     System.out.println("Main dump file created");
@@ -249,7 +278,7 @@ public class GloomGame {
                 return;
             }
 
-            try (FileWriter writer = new FileWriter(dump)){
+            try (FileWriter writer = new FileWriter(dump)) {
 
                 writer.append("----- CACHED DATA -----\n");
                 dataFetcher.getCache().asMap().forEach((k, v) -> {
