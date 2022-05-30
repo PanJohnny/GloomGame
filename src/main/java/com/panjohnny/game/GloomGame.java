@@ -4,11 +4,13 @@ import com.google.gson.JsonObject;
 import com.panjohnny.game.data.DataSet;
 import com.panjohnny.game.data.FlagChecker;
 import com.panjohnny.game.data.GameDataManager;
+import com.panjohnny.game.data.Translator;
 import com.panjohnny.game.event.Event;
 import com.panjohnny.game.event.EventHandler;
 import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.io.KeyboardEvent;
 import com.panjohnny.game.io.Mouse;
+import com.panjohnny.game.io.SoundPlayer;
 import com.panjohnny.game.mem.DataFetcher;
 import com.panjohnny.game.mem.ImageFetcher;
 import com.panjohnny.game.render.FontRenderer;
@@ -18,18 +20,17 @@ import com.panjohnny.game.scenes.MainMenu;
 import com.panjohnny.game.scenes.OptionScene;
 import com.panjohnny.game.scenes.Scene;
 import com.panjohnny.game.scenes.TestScene;
+import com.panjohnny.game.scenes.designer.LevelDesigner;
 import lombok.Getter;
 
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-
-import static java.lang.System.Logger.Level.DEBUG;
 
 public class GloomGame {
     private static GloomGame instance;
@@ -73,7 +74,6 @@ public class GloomGame {
         scenes = new ArrayList<>();
         gameThread = new Thread(() -> {
             Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-                System.err.println("Uncaught exception in thread " + t.getName());
                 e.printStackTrace();
                 StringBuilder sb = new StringBuilder();
                 sb.append("---------- UNCAUGHT EXCEPTION ----------\n");
@@ -102,10 +102,18 @@ public class GloomGame {
                     sb.append(arg).append("\n");
                 }
                 sb.append("----\n\n");
+                sb.append("---------- RAW ----------\n");
+                sb.append(e).append("\n");
+                for (StackTraceElement ste : e.getStackTrace()) {
+                    sb.append(ste.toString()).append("\n");
+                }
                 // append something wholesome to the end of the file
                 sb.append("Error happens :sadge:");
 
                 dataManager.writeFile("error.log", sb.toString());
+                System.err.println("Uncaught exception in thread " + t.getName());
+                System.err.println("Error log written to /data/error.log");
+                e.printStackTrace();
                 System.exit(1);
             });
             running = true;
@@ -167,18 +175,22 @@ public class GloomGame {
             }
         });
 
-        load();
-
-        scenes.add(new MainMenu());
-        scenes.add(new OptionScene());
-        scenes.add(new TestScene());
+        if (!Options.LEVEL_DESIGNER) {
+            scenes.add(new MainMenu());
+            scenes.add(new OptionScene());
+            scenes.add(new TestScene());
+        } else {
+            scenes.add(new LevelDesigner());
+        }
 
         setScene(0);
+        SoundPlayer.playSound("/assets/music/theme_song.wav", 1);
     }
 
     public static void main(String[] args) {
         FlagChecker.check(args);
         instance = new GloomGame();
+        instance.load();
         instance.start();
     }
 
@@ -219,11 +231,15 @@ public class GloomGame {
         }
         sceneIndex = scene;
         currentSceneLoaded = false;
+
+        System.gc();
     }
 
     public void save() {
         JsonObject json = new JsonObject();
         json.add("window", window.toJson());
+        json.add("language", Translator.toJson());
+        json.add("settings", Options.toJson());
         dataManager.saveFile(new DataSet(json), "/latest_session.json");
     }
 
@@ -232,6 +248,10 @@ public class GloomGame {
         DataSet data = dataManager.loadFile("/latest_session.json");
         if (!data.isEmpty()) {
             window.pushJson(data.getObject("window"));
+            Translator.load(data.getString("language"));
+            if(data.containsKey("settings")) {
+                Options.load(data.getObject("settings"));
+            }
         }
     }
 

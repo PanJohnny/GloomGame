@@ -1,6 +1,5 @@
 package com.panjohnny.game.render;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.awt.geom.AffineTransform;
@@ -12,7 +11,7 @@ import java.util.List;
 @Getter
 public class AnimatedTexture {
     private final BufferedImage image;
-    private final int collumns;
+    private final int columns;
     private final int rows;
     private int currentFrame;
 
@@ -20,16 +19,16 @@ public class AnimatedTexture {
     // in MS
     private final long timeBetweenFrames;
     private long lastTime;
-    public AnimatedTexture(BufferedImage image, int collumns, int rows, long timeBetweenFrames) {
+    public AnimatedTexture(BufferedImage image, int columns, int rows, long timeBetweenFrames) {
         this.image = image;
-        this.collumns = collumns;
+        this.columns = columns;
         this.rows = rows;
-        int width = image.getWidth() / collumns;
+        int width = image.getWidth() / columns;
         int height = image.getHeight() / rows;
 
         frames = new ArrayList<>();
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < collumns; j++) {
+            for (int j = 0; j < columns; j++) {
                 frames.add(image.getSubimage(j * width, i * height, width, height));
             }
         }
@@ -61,6 +60,6 @@ public class AnimatedTexture {
         tx.translate(-image.getWidth(null), 0);
         AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
         op.filter(image, flipped);
-        return new AnimatedTexture(flipped, collumns, rows, timeBetweenFrames);
+        return new AnimatedTexture(flipped, columns, rows, timeBetweenFrames);
     }
 }

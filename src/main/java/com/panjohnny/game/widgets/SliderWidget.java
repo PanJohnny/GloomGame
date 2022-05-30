@@ -13,11 +13,11 @@ public class SliderWidget extends ImageWidget {
     private int sliderX = 0;
     private final Consumer<SliderWidget> onUpdate;
     public SliderWidget(int x, int y, Consumer<SliderWidget> onUpdate) {
-        super("/options/slider.png", x, y);
+        super("/assets/menu/widgets/slider/slider.png", x, y);
 
         this.onUpdate = onUpdate;
 
-        this.thumb = GloomGame.getInstance().getImageFetcher().get("/options/slider_front.png");
+        this.thumb = GloomGame.getInstance().getImageFetcher().get("/assets/menu/widgets/slider/slider_front.png");
     }
 
     public SliderWidget(int x, int y) {
@@ -47,5 +47,9 @@ public class SliderWidget extends ImageWidget {
     public int getValue() {
         // return value 0 - 100
         return (int) ((sliderX / (getActualSize().width - GloomGame.getInstance().getWindow().multiply(thumb.getWidth()))) * 100);
+    }
+
+    public float toFloat() {
+        return Math.min((float) getValue() / 100f, 1.0f);
     }
 }

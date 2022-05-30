@@ -19,8 +19,8 @@ public class Player extends GameObject implements EventListener {
 
     public Player(int x, int y) {
         super(x, y, 32, 64);
-        front = GloomGame.getInstance().getImageFetcher().getAnimation("/player/player_idle.png", 2, 1, 1000L);
-        runL = GloomGame.getInstance().getImageFetcher().getAnimation("/player/player_run.png", 2, 1, 245L);
+        front = GloomGame.getInstance().getImageFetcher().getAnimation("/assets/player/player_idle.png", 2, 1, 1000L);
+        runL = GloomGame.getInstance().getImageFetcher().getAnimation("/assets/player/player_run.png", 2, 1, 245L);
         runR = runL.getCopyFlippedHorizontally();
 
         run = runL;

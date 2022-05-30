@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
 public class ButtonWidget extends ClickableImageWidget{
@@ -17,7 +16,7 @@ public class ButtonWidget extends ClickableImageWidget{
     @Setter
     private String text;
     public ButtonWidget(int x, int y, Consumer<ButtonWidget> onClick, Consumer<Pair<ButtonWidget, Graphics>> onHover, String text) {
-        super(GloomGame.getInstance().getImageFetcher().get("/menu/button.png"),  x, y);
+        super(GloomGame.getInstance().getImageFetcher().get("/assets/menu/widgets/button.png"),  x, y);
 
         this.text = text;
         this.onHover = onHover;

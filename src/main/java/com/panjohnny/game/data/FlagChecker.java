@@ -12,6 +12,7 @@ public class FlagChecker {
 
     static {
         FLAGS.put("-dev", Options::setDev);
+        FLAGS.put("-level", Options::setLevel);
     }
 
     public static void check(String[] args) {

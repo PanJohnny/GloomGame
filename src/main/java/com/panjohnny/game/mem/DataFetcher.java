@@ -20,7 +20,7 @@ public class DataFetcher {
         CacheLoader<String, JsonElement> loader = new CacheLoader<>() {
             @Override
             @NonNull
-            public JsonElement load(@NonNull String path) throws Exception {
+            public JsonElement load(@NonNull String path) {
                 InputStream stream = DataFetcher.class.getResourceAsStream(path);
                 if (stream == null) {
                     throw new AssetNotFoundException(path);
@@ -63,5 +63,14 @@ public class DataFetcher {
 
     public LoadingCache<String, JsonElement> getCache() {
         return cache;
+    }
+
+    public boolean exists(String path) {
+        try {
+            get(path);
+            return true;
+        } catch (AssetNotFoundException e) {
+            return false;
+        }
     }
 }

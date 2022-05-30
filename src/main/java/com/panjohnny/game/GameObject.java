@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 @Getter
 public abstract class GameObject implements Drawable {
@@ -19,6 +20,10 @@ public abstract class GameObject implements Drawable {
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    public GameObject() {
+
     }
 
     public Rectangle getBound() {
@@ -45,5 +50,9 @@ public abstract class GameObject implements Drawable {
     protected void setSize(int width, int height) {
         setWidth(width);
         setHeight(height);
+    }
+
+    public void apply(Consumer<GameObject> consumer) {
+        consumer.accept(this);
     }
 }

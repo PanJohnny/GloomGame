@@ -10,7 +10,7 @@ import java.awt.*;
 
 @Setter
 @Getter
-public class TextWidget extends GameObject {
+public class TextWidget extends Widget {
     private String text;
     private int size;
     private Color color;

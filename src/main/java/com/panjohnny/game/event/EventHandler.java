@@ -21,6 +21,10 @@ public class EventHandler {
     }
 
     public void fire(Event<?> event) {
-        listeners.forEach(listener -> listener.dispatchEvent(event));
+       // prevent concurrent modification exception
+        LinkedList<EventListener> listeners = new LinkedList<>(this.listeners);
+        for(EventListener listener : listeners) {
+            listener.dispatchEvent(event);
+        }
     }
 }

@@ -1,13 +1,12 @@
 package com.panjohnny.game.widgets;
 
-import com.panjohnny.game.GameObject;
 import com.panjohnny.game.GloomGame;
 import lombok.Getter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageWidget extends GameObject {
+public class ImageWidget extends Widget {
 
     @Getter
     private final BufferedImage image;

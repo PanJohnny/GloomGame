@@ -9,7 +9,7 @@ public class FontRenderer {
     public static void load() {
         // load gloom_original using stream
         try {
-            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontRenderer.class.getResourceAsStream("/gloom_original.ttf")));
+            font = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(FontRenderer.class.getResourceAsStream("/assets/fonts/gloom_original.ttf")));
         } catch (FontFormatException | IOException e) {
             throw new RuntimeException(e);
         }

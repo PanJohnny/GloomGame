@@ -11,7 +11,7 @@ public class Bulb extends BakedLight{
     public Bulb(int x, int y) {
         super(Colors.YELLOW, x, y);
 
-        lightBulb = GloomGame.getInstance().getImageFetcher().get("/tiles/bulb.png");
+        lightBulb = GloomGame.getInstance().getImageFetcher().get("/assets/tiles/bulb.png");
 
         bake();
     }

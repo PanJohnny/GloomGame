@@ -1,0 +1,15 @@
+{
+  "name": "American English",
+  "code": "en_us",
+  "authors": [
+    "PanJohnny"
+  ],
+  "version": "alpha 1.0",
+  "menu.options": "Options",
+  "btn.play": "Play",
+  "btn.options": "Options",
+  "btn.quit": "Quit",
+  "btn.back": "Back",
+  "options.volume": "Volume",
+  "dev.info": "A lot of stuff may change, some aspects may not work at all. This is a development build."
+}

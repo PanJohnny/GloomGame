@@ -107,5 +107,7 @@ public class GameDataManager {
         return new DataSet(new JsonObject());
     }
 
-
+    public static boolean exists(String path) {
+        return new File("data/" + path).exists();
+    }
 }

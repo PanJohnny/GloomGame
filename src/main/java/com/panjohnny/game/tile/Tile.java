@@ -14,7 +14,11 @@ public class Tile extends GameObject {
     public Tile(int x, int y, int width, int height) {
         super(x, y, width, height);
 
-        tile = GloomGame.getInstance().getImageFetcher().get("/tiles/tile.png");
+        tile = GloomGame.getInstance().getImageFetcher().get("/assets/tiles/tile.png");
+    }
+
+    public Tile() {
+        tile = GloomGame.getInstance().getImageFetcher().get("/assets/tiles/tile.png");
     }
 
     @Override

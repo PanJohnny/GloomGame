@@ -1,11 +1,33 @@
 {
-  "layout": [
-    "000000000000000000000000000000000000000000000010",
-    "000000000000000000000000000000000000000000000010",
-    "000000000000000000000000000000000000000000000010",
-    "000000000000000000000000000000000000000000000010"
+  "name": "Test",
+  "id": "l1",
+  "author": "PanJohnny",
+  "objects": [
+    {
+      "type": "Tile",
+      "x": 100,
+      "y": 100,
+      "width": 100,
+      "height": 100,
+      "texture": "default"
+    },
+    {
+      "type": "Collider",
+      "x": 100,
+      "y": 100,
+      "width": 100,
+      "height": 100,
+      "onCollision": "l1_collision"
+    }
   ],
-  "match": {
-    "1": "wall"
+  "levelData": {
+    "nextLevel": "l2",
+    "spawn":  {
+      "x": 100,
+      "y": 100
+    },
+    "musicPlayer": {
+      "music": "PanJohnny:sample"
+    }
   }
 }
