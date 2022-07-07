@@ -152,7 +152,8 @@ public class GloomGame {
             }
         }, "Main Thread");
 
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+        if(!Options.UNIT_TESTING_MODE)
+            Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
         renderer = Renderer.getInstance();
         window = new Window();
@@ -184,12 +185,24 @@ public class GloomGame {
         }
 
         setScene(0);
-        SoundPlayer.playSound("/assets/music/theme_song.wav", 1);
+
+        // prevent me from dying on the spot when testing
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            SoundPlayer.playSound("/assets/music/theme_song.wav", 1);
+        });
+
     }
 
     public static void main(String[] args) {
         FlagChecker.check(args);
         instance = new GloomGame();
+        if(Options.UNIT_TESTING_MODE)
+            return;
         instance.load();
         instance.start();
     }

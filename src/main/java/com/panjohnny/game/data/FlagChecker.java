@@ -13,6 +13,7 @@ public class FlagChecker {
     static {
         FLAGS.put("-dev", Options::setDev);
         FLAGS.put("-level", Options::setLevel);
+        FLAGS.put("-only-init", Options::setOnlyInit);
     }
 
     public static void check(String[] args) {

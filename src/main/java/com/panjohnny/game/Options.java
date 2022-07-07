@@ -9,6 +9,8 @@ public class Options {
     public static boolean DEVELOPER_MODE = false;
     public static boolean LEVEL_DESIGNER = false;
 
+    public static boolean UNIT_TESTING_MODE = false;
+
     //TODO make this a configurable option and working
     public static float volume = 0.1f;
 
@@ -17,6 +19,10 @@ public class Options {
     }
     public static void setLevel() {
         LEVEL_DESIGNER = true;
+    }
+
+    public static void setOnlyInit() {
+        UNIT_TESTING_MODE = true;
     }
 
     public static JsonObject toJson() {
