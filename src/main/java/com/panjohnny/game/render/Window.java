@@ -5,8 +5,12 @@ import com.google.gson.JsonObject;
 import com.panjohnny.game.data.Jsonable;
 import lombok.Getter;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Objects;
 
 public class Window implements Jsonable {
     @Getter
@@ -19,6 +23,18 @@ public class Window implements Jsonable {
 
     public static final boolean MAXIMIZED = false;
 
+    public static final Cursor BLANK_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
+    public static final Cursor DEFAULT_CURSOR;
+
+    static {
+        try {
+            DEFAULT_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(ImageIO.read(Objects.requireNonNull(Window.class.getResourceAsStream("/assets/cursor.png"))), new Point(0, 0), "default cursor");
+        } catch (IOException e) {
+            System.err.println("Failed to load default cursor");
+            throw new RuntimeException(e);
+        }
+    }
+
     public Window() {
         frame = new JFrame(TITLE);
         frame.setSize(WIDTH, HEIGHT);
@@ -28,6 +44,8 @@ public class Window implements Jsonable {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(800, 600));
         frame.setBackground(Colors.DARK);
+
+        showCursor(true);
     }
 
     public void show() {
@@ -105,5 +123,9 @@ public class Window implements Jsonable {
 
     public float multiply(float original) {
         return original *((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
+    }
+
+    public void showCursor(boolean show) {
+        frame.setCursor(show ? DEFAULT_CURSOR : BLANK_CURSOR);
     }
 }

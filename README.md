@@ -3,17 +3,15 @@ WIP Game
 
 # The PLF format
 ## Lines
-1. PLF
-2. PLF_VERSION (current 0.1)
-3. LEVEL_NAME
-4. LEVEL_AUTHOR
-5. OBJECTS (sourounded in [])
+1. PLF %VERSION%
+2. LEVEL_NAME
+3. LEVEL_AUTHOR
+4. OBJECTS (sourounded in [])
 
 ## Example
 
 ```
-PLF
-0.1
+PLF 0.1
 Level 01
 PanJohnny
 [com.panjohnny.game.tile.Tile(0,0,10,10);;com.panjohnny.game.tile.Tile(0,0,10,10)]

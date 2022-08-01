@@ -8,19 +8,24 @@ public class LevelParser {
     public static final int BEGUN = 1;
     public static final int ENDED = 2;
 
+    private final InputStream stream;
     public LevelParser(InputStream stream) {
+        this.stream = stream;
     }
 
     public LevelFile parse() {
-//        Scanner scanner = new Scanner(stream);
-//        StringBuilder builder = new StringBuilder();
-//        while (scanner.hasNextLine()) {
-//            builder.append(scanner.nextLine());
-//        }
-//
-//        builder.trimToSize();
-//        scanner.close();
+        Scanner scanner = new Scanner(stream);
+        StringBuilder builder = new StringBuilder();
+        while (scanner.hasNextLine()) {
+            builder.append(scanner.nextLine());
+        }
 
+        builder.trimToSize();
+        scanner.close();
+
+        System.out.println(builder);
+
+        // This may be deleted lol wtf
         // TODO file parsing
         return null;
     }

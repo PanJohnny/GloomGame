@@ -40,12 +40,19 @@ public class LevelLoadingTest extends TestCase {
         assertEquals(10, widget.getSize());
     }
 
-    public void testStringifyAdvanced() {
+    public void testStringifyAdvanced() throws InvocationTargetException, IllegalAccessException {
         GloomGame.main(new String[]{"-only-init"});
         TextWidget widget = new TextWidget(0, 0, "Hello, World!", Colors.RED, 10);
         String string = PLFTools.stringify(widget);
 
-        assertEquals("com.panjohnny.game.widgets.TextWidget(0,0,Hello\\u2c} World!,%s,10)".formatted(Colors.RED.getRGB()), string);
+        System.out.println(string);
+
+        assertEquals(string, "com.panjohnny.game.widgets.TextWidget(0,0,Hello, World!,-6133911,10)");
+    }
+
+    public void testAccessGetterString() {
+        assertEquals(PLFTools.applyAccessGetterLogic("rgb", "get↑"), "getRGB");
+        assertEquals(PLFTools.applyAccessGetterLogic("something", "get⌃"), "getSomething");
     }
 
     public void testIllegalString() {

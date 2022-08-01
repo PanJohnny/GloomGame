@@ -1,8 +1,7 @@
 package com.panjohnny.game.widgets;
 
-import com.panjohnny.game.GameObject;
 import com.panjohnny.game.data.Translator;
-import com.panjohnny.game.data.plf.AdvancedPLFMember;
+import com.panjohnny.game.data.plf.PLFAccess;
 import com.panjohnny.game.data.plf.PLFTools;
 import com.panjohnny.game.render.FontRenderer;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import java.awt.*;
 
 @Setter
 @Getter
-public class TextWidget extends Widget implements AdvancedPLFMember {
+public class TextWidget extends Widget {
     private String text;
     private int size;
     private Color color;
@@ -24,6 +23,7 @@ public class TextWidget extends Widget implements AdvancedPLFMember {
         this.text = text;
     }
 
+    @PLFAccess(mode = PLFAccess.AccessMode.CUSTOM_GETTERS, specialGetterPrefixes = {"", "", "", "get↑", ""}, paramNames = {"x","y","text", "rgb", "size"})
     public TextWidget(int x, int y, String text, int rgb, int size) {
         this(x, y, text, new Color(rgb), size);
     }
@@ -43,10 +43,7 @@ public class TextWidget extends Widget implements AdvancedPLFMember {
         FontRenderer.draw(text, size, p.x, p.y, color, g);
     }
 
-    @Override
-    public String convertToString() {
-        return PLFTools.genBasicObjectPrepend(this.getClass()) +
-                getX() + "," + getY() + "," + PLFTools.makeStringSuitable(getText()) + "," + getColor().getRGB() + "," + getSize() +
-                ")";
+    public int getRGB() {
+        return color.getRGB();
     }
 }
