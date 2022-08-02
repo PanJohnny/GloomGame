@@ -12,7 +12,7 @@ public class GameDataManager {
     public GameDataManager() {
     }
 
-    public DataSet loadFile(String fileName) {
+    public JsonElement loadFile(String fileName) {
         // get the file in current folder in /data/%fileName% format if dir or file does not exist create it if that is not possible throw RuntimeException
         File file = new File("data/" + fileName);
 
@@ -30,7 +30,7 @@ public class GameDataManager {
                 throw new RuntimeException("Could not create file " + file.getAbsolutePath(), e);
             }
 
-            return createEmpty();
+            return new JsonObject();
         }
 
         // create FileReader and read it as Json (use Gson)
@@ -40,14 +40,11 @@ public class GameDataManager {
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Could not find file " + file.getAbsolutePath(), e);
         }
-        if(!jsonElement.isJsonObject()) {
-            return createEmpty();
-        }
         // create DataSet from JsonElement
-        return new DataSet(jsonElement.getAsJsonObject());
+        return jsonElement;
     }
 
-    public void saveFile(@NonNull DataSet dataSet, String fileName) {
+    public void saveFile(@NonNull JsonElement dataSet, String fileName) {
         // get the file in current folder in /data/%fileName% format if dir or file does not exist create it if that is not possible throw RuntimeException
         File file = new File("data/" + fileName);
 
@@ -68,7 +65,7 @@ public class GameDataManager {
 
         // create FileWriter and write it as Json (use Gson)
         try(FileWriter fw = new FileWriter(file)) {
-            fw.write(dataSet.data().toString());
+            fw.write(dataSet.toString());
             fw.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,10 +98,6 @@ public class GameDataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public DataSet createEmpty() {
-        return new DataSet(new JsonObject());
     }
 
     public static boolean exists(String path) {

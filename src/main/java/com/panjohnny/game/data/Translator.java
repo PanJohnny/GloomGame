@@ -24,15 +24,15 @@ public final class Translator {
     }
 
     public static void loadOuterLanguage(String lang) {
-        DataSet set = GloomGame.getInstance().getDataManager().loadFile("/assets/lang/" + lang + ".json");
-        if(!validate(set)) {
+        JsonElement set = GloomGame.getInstance().getDataManager().loadFile("/assets/lang/" + lang + ".json");
+        if(!validate(set.getAsJsonObject())) {
             System.err.println("Invalid language file: " + lang);
         }
-        currentLang = set.data();
+        currentLang = set.getAsJsonObject();
     }
 
-    public static boolean validate(DataSet set) {
-        return set!=null && set.data()!=null && set.containsKey("name") && set.containsKey("version") && set.containsKey("authors") && set.containsKey("code");
+    public static boolean validate(JsonObject set) {
+        return set!=null && set.has("name") && set.has("version") && set.has("authors") && set.has("code");
     }
 
     public static JsonElement toJson() {

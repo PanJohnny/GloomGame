@@ -11,5 +11,6 @@
   "btn.quit": "Quit",
   "btn.back": "Back",
   "options.volume": "Volume",
-  "dev.info": "A lot of stuff may change, some aspects may not work at all. This is a development build."
+  "dev.info": "A lot of stuff may change, some aspects may not work at all. This is a development build.",
+  "menu.loading": "Loading..."
 }

@@ -10,31 +10,28 @@ import java.util.regex.Pattern;
 import static com.google.common.primitives.Chars.contains;
 
 public final class PLFTools {
-    public static final String PLF_EXTENSION = ".plf";
-    public static final String PLF_HEADER = "PLF";
-    public static final String VERSION = "alpha-0.1";
-
     public static String stringifyObject(GameObject object) {
         return object.getClass().getPackageName() + "." + object.getClass().getSimpleName() + "(" + object.getX() + "," + object.getY() + "," + object.getWidth() + "," + object.getHeight() + ")";
     }
 
     public static GameObject objectifyString(String string) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        String name = string.substring(0, string.indexOf('('));
         String[] args = string.substring(string.indexOf('(') + 1, string.indexOf(')')).split(",");
         int x = Integer.parseInt(args[0]);
         int y = Integer.parseInt(args[1]);
         int width = Integer.parseInt(args[2]);
         int height = Integer.parseInt(args[3]);
 
-        Class<?> clazz = Class.forName(name);
+        Class<?> clazz = typeOf(string);
         Constructor<?> constructor = clazz.getConstructor(int.class, int.class, int.class, int.class);
         return (GameObject) constructor.newInstance(x, y, width, height);
     }
 
     // oh my god, I managed to do it! 😎
-    public static @NonNull Object convertString(@NonNull String string) throws InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-        String name = string.substring(0, string.indexOf('('));
-        Class<?> type = Class.forName(name);
+    public static @NonNull Object convertString(@NonNull String string) throws InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException {
+        Class<?> type = typeOf(string);
+        if(type.isAssignableFrom(GameObject.class)) {
+            return objectifyString(string);
+        }
         String[] args = string.substring(string.indexOf('(') + 1, string.indexOf(')')).split(",");
         Object[] convertedArgs = new Object[args.length];
         Object result = null;
@@ -195,5 +192,9 @@ public final class PLFTools {
         }
 
         return string;
+    }
+
+    public static Class<?> typeOf(String ob) throws ClassNotFoundException {
+        return Class.forName(ob.substring(0, ob.indexOf('(')));
     }
 }

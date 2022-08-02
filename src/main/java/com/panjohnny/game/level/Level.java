@@ -1,12 +1,13 @@
-package com.panjohnny.game.scenes;
+package com.panjohnny.game.level;
 
+import com.panjohnny.game.scenes.Scene;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.function.Consumer;
 
 @Builder(builderClassName = "LevelBuilder")
-public class Level extends Scene{
+public class Level extends Scene {
     private final Consumer<Level> init;
     @Getter
     private final String name, author;

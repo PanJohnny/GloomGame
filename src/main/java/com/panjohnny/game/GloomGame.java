@@ -1,7 +1,7 @@
 package com.panjohnny.game;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.panjohnny.game.data.DataSet;
 import com.panjohnny.game.data.FlagChecker;
 import com.panjohnny.game.data.GameDataManager;
 import com.panjohnny.game.data.Translator;
@@ -11,6 +11,7 @@ import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.io.KeyboardEvent;
 import com.panjohnny.game.io.Mouse;
 import com.panjohnny.game.io.SoundPlayer;
+import com.panjohnny.game.level.LevelManager;
 import com.panjohnny.game.mem.DataFetcher;
 import com.panjohnny.game.mem.ImageFetcher;
 import com.panjohnny.game.render.FontRenderer;
@@ -20,14 +21,13 @@ import com.panjohnny.game.scenes.MainMenu;
 import com.panjohnny.game.scenes.OptionScene;
 import com.panjohnny.game.scenes.Scene;
 import com.panjohnny.game.scenes.TestScene;
-import com.panjohnny.game.scenes.designer.LevelDesigner;
+import com.panjohnny.game.level.LevelDesigner;
 import lombok.Getter;
 
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
@@ -65,6 +65,9 @@ public class GloomGame {
 
     @Getter
     private Player player;
+
+//    @Getter
+//    private LevelManager levelManager;
 
     public GloomGame() {
         this.dataManager = new GameDataManager();
@@ -195,7 +198,6 @@ public class GloomGame {
             }
             SoundPlayer.playSound("/assets/music/theme_song.wav", 1);
         });
-
     }
 
     public static void main(String[] args) {
@@ -253,17 +255,17 @@ public class GloomGame {
         json.add("window", window.toJson());
         json.add("language", Translator.toJson());
         json.add("settings", Options.toJson());
-        dataManager.saveFile(new DataSet(json), "/latest_session.json");
+        dataManager.saveFile(json, "/latest_session.json");
     }
 
     public void load() {
         FontRenderer.load();
-        DataSet data = dataManager.loadFile("/latest_session.json");
-        if (!data.isEmpty()) {
-            window.pushJson(data.getObject("window"));
-            Translator.load(data.getString("language"));
-            if(data.containsKey("settings")) {
-                Options.load(data.getObject("settings"));
+        JsonObject data = dataManager.loadFile("/latest_session.json").getAsJsonObject();
+        if (data.has("window")) {
+            window.pushJson(data.get("window").getAsJsonObject());
+            Translator.load(data.get("language").getAsString());
+            if(data.has("settings")) {
+                Options.load(data.get("settings").getAsJsonObject());
             }
         }
     }
@@ -338,7 +340,7 @@ public class GloomGame {
                     }
                 });
 
-                writer.append("\nLast Scene: ").append(currentScene.getClass().getSimpleName()).append("\n");
+                writer.append("\nLast Scene: ").append(currentScene==null?"null" : currentScene.getClass().getSimpleName()).append("\n");
 
                 writer.append("\n\n----- EVENT LISTENERS -----\n");
                 eventHandler.getListeners().forEach(listener -> {
@@ -397,5 +399,11 @@ public class GloomGame {
         }
 
         System.out.println("Exiting...");
+    }
+
+    public void setSceneHard(Scene scene) {
+        currentScene = scene;
+
+        System.gc();
     }
 }

@@ -28,7 +28,7 @@ public class LevelLoadingTest extends TestCase {
         assertEquals(10, tile.getHeight());
     }
 
-    public void testAdvancedConvert() throws InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+    public void testAdvancedConvert() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException {
         GloomGame.main(new String[]{"-only-init"});
         String widgetString = "com.panjohnny.game.widgets.TextWidget(0,0,Hello\\u2c} World!,%s,10)".formatted(Colors.RED.getRGB());
         TextWidget widget = (TextWidget) PLFTools.convertString(widgetString);
