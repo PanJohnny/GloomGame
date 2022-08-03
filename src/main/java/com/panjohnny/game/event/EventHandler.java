@@ -9,7 +9,7 @@ public class EventHandler {
     private final LinkedList<EventListener> listeners = new LinkedList<>();
 
     public void register(EventListener listener) {
-        if(listeners.contains(listener))
+        if (listeners.contains(listener))
             return;
         listeners.add(listener);
         listener.cache();
@@ -21,9 +21,9 @@ public class EventHandler {
     }
 
     public void fire(Event<?> event) {
-       // prevent concurrent modification exception
+        // prevent concurrent modification exception
         LinkedList<EventListener> listeners = new LinkedList<>(this.listeners);
-        for(EventListener listener : listeners) {
+        for (EventListener listener : listeners) {
             listener.dispatchEvent(event);
         }
     }

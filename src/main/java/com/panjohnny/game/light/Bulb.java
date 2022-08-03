@@ -6,8 +6,9 @@ import com.panjohnny.game.render.Colors;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Bulb extends BakedLight{
+public class Bulb extends BakedLight {
     private final BufferedImage lightBulb;
+
     public Bulb(int x, int y) {
         super(Colors.YELLOW, x, y);
 
@@ -37,6 +38,6 @@ public class Bulb extends BakedLight{
         Point pos = getActualPosition();
 
         g.drawImage(lightBulb, pos.x, pos.y, null);
-        g.drawImage(getImage(), pos.x, pos.y+lightBulb.getHeight(), null);
+        g.drawImage(getImage(), pos.x, pos.y + lightBulb.getHeight(), null);
     }
 }

@@ -29,14 +29,15 @@ public final class PLFTools {
     // oh my god, I managed to do it! 😎
     public static @NonNull Object convertString(@NonNull String string) throws InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException {
         Class<?> type = typeOf(string);
-        if(type.isAssignableFrom(GameObject.class)) {
+        if (type.isAssignableFrom(GameObject.class)) {
             return objectifyString(string);
         }
         String[] args = string.substring(string.indexOf('(') + 1, string.indexOf(')')).split(",");
         Object[] convertedArgs = new Object[args.length];
         Object result = null;
         boolean correctInstance;
-        for (Constructor<?> constructor : type.getConstructors()) { if(constructor.getParameterCount() == args.length) {
+        for (Constructor<?> constructor : type.getConstructors()) {
+            if (constructor.getParameterCount() == args.length) {
                 Parameter[] parameters = constructor.getParameters();
                 correctInstance = true;
                 for (int i = 0, parametersLength = parameters.length; i < parametersLength; i++) {
@@ -58,14 +59,14 @@ public final class PLFTools {
                         break;
                     }
                 }
-                if(!correctInstance) {
+                if (!correctInstance) {
                     continue;
                 }
                 result = constructor.newInstance(convertedArgs);
             }
         }
 
-        if(result == null)
+        if (result == null)
             throw new IllegalArgumentException("Could not convert string to object of type " + type.getName());
         return result;
     }
@@ -78,8 +79,8 @@ public final class PLFTools {
         // search for constructor with @PLFAccess
         Class<?> clazz = object.getClass();
         Constructor<?>[] constructors = Arrays.stream(clazz.getConstructors()).filter((c) -> c.isAnnotationPresent(PLFAccess.class)).toArray(Constructor[]::new);
-        if(constructors.length != 1)
-            throw new IllegalArgumentException("Object should%s have one constructor annotated with PLFAccess".formatted(constructors.length==0?"":"only"));
+        if (constructors.length != 1)
+            throw new IllegalArgumentException("Object should%s have one constructor annotated with PLFAccess".formatted(constructors.length == 0 ? "" : "only"));
         Constructor<?> constructor = constructors[0];
         PLFAccess access = constructor.getAnnotation(PLFAccess.class);
         StringBuilder builder = new StringBuilder(clazz.getPackageName());
@@ -92,16 +93,16 @@ public final class PLFTools {
                     String paramName = access.paramNames()[i];
                     boolean found = false;
                     for (Field field : clazz.getFields()) {
-                        if(field.getName().equals(paramName) && field.getType() == parameter.getType()) {
+                        if (field.getName().equals(paramName) && field.getType() == parameter.getType()) {
                             found = true;
 
                             builder.append(field.get(object));
-                            if(i != constructor.getParameters().length - 1)
+                            if (i != constructor.getParameters().length - 1)
                                 builder.append(',');
                             break;
                         }
                     }
-                    if(!found)
+                    if (!found)
                         throw new IllegalArgumentException("Object doesn't have the right fields as there are in constructor");
                 }
             }
@@ -111,17 +112,17 @@ public final class PLFTools {
                     String paramName = access.paramNames()[i];
                     boolean found = false;
                     String translatedName = applyAccessGetterLogic(paramName, access.getterPrefix());
-                    for (Method method:clazz.getMethods()) {
-                        if(method.getName().equals(translatedName) && method.getReturnType() == parameter.getType()) {
+                    for (Method method : clazz.getMethods()) {
+                        if (method.getName().equals(translatedName) && method.getReturnType() == parameter.getType()) {
                             found = true;
 
                             builder.append(method.invoke(object));
-                            if(i != constructor.getParameters().length - 1)
+                            if (i != constructor.getParameters().length - 1)
                                 builder.append(',');
                             break;
                         }
                     }
-                    if(!found)
+                    if (!found)
                         throw new IllegalArgumentException("Object doesn't have the right fields as there are in constructor");
                 }
             }
@@ -131,23 +132,23 @@ public final class PLFTools {
                     String paramName = access.paramNames()[i];
                     boolean found = false;
                     String prefix;
-                    if(access.specialGetterPrefixes().length > i)
+                    if (access.specialGetterPrefixes().length > i)
                         prefix = access.specialGetterPrefixes()[i];
                     else
                         prefix = "";
                     prefix = prefix.isBlank() ? access.getterPrefix() : prefix;
                     String translatedName = applyAccessGetterLogic(paramName, prefix);
-                    for (Method method:clazz.getMethods()) {
-                        if(method.getName().equals(translatedName) && method.getReturnType() == parameter.getType()) {
+                    for (Method method : clazz.getMethods()) {
+                        if (method.getName().equals(translatedName) && method.getReturnType() == parameter.getType()) {
                             found = true;
 
                             builder.append(method.invoke(object));
-                            if(i != constructor.getParameters().length - 1)
+                            if (i != constructor.getParameters().length - 1)
                                 builder.append(',');
                             break;
                         }
                     }
-                    if(!found)
+                    if (!found)
                         throw new IllegalArgumentException("Object doesn't have the right fields as there are in constructor");
                 }
             }
@@ -158,10 +159,11 @@ public final class PLFTools {
     }
 
     public static String applyAccessGetterLogic(String name, String logic) {
-        return logic.substring(0, logic.length()-1) + (logic.endsWith("⌃") ? name.replaceFirst("[A-z]", String.valueOf(name.toCharArray()[0]).toUpperCase()):(logic.endsWith("↑")?name.toUpperCase():name));
+        return logic.substring(0, logic.length() - 1) + (logic.endsWith("⌃") ? name.replaceFirst("[A-z]", String.valueOf(name.toCharArray()[0]).toUpperCase()) : (logic.endsWith("↑") ? name.toUpperCase() : name));
     }
 
-    public static final char[] ILLEGAL_STRING_CHARS = new char[] {',', '(', ')', '\\', '}'};
+    public static final char[] ILLEGAL_STRING_CHARS = new char[]{',', '(', ')', '\\', '}'};
+
     public static String makeStringSuitable(String string) {
         char[] chars = string.toCharArray();
         StringBuilder builder = new StringBuilder();
@@ -178,8 +180,8 @@ public final class PLFTools {
 
     public static String returnStringToOriginalForm(String string) {
         int index = string.indexOf("\\u");
-        while(index != -1) {
-            int end = string.substring(index+2).indexOf('}') + index + 2;
+        while (index != -1) {
+            int end = string.substring(index + 2).indexOf('}') + index + 2;
             String ch = string.substring(index + 2, end);
             try {
                 int a = Integer.parseInt(ch, 16);

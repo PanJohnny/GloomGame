@@ -1,6 +1,5 @@
 package com.panjohnny.game;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.panjohnny.game.data.FlagChecker;
 import com.panjohnny.game.data.GameDataManager;
@@ -11,7 +10,8 @@ import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.io.KeyboardEvent;
 import com.panjohnny.game.io.Mouse;
 import com.panjohnny.game.io.SoundPlayer;
-import com.panjohnny.game.level.LevelManager;
+import com.panjohnny.game.level.Level;
+import com.panjohnny.game.level.LevelDesigner;
 import com.panjohnny.game.mem.DataFetcher;
 import com.panjohnny.game.mem.ImageFetcher;
 import com.panjohnny.game.render.FontRenderer;
@@ -21,7 +21,6 @@ import com.panjohnny.game.scenes.MainMenu;
 import com.panjohnny.game.scenes.OptionScene;
 import com.panjohnny.game.scenes.Scene;
 import com.panjohnny.game.scenes.TestScene;
-import com.panjohnny.game.level.LevelDesigner;
 import lombok.Getter;
 
 import java.awt.event.KeyListener;
@@ -155,7 +154,7 @@ public class GloomGame {
             }
         }, "Main Thread");
 
-        if(!Options.UNIT_TESTING_MODE)
+        if (!Options.UNIT_TESTING_MODE)
             Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
         renderer = Renderer.getInstance();
@@ -203,7 +202,7 @@ public class GloomGame {
     public static void main(String[] args) {
         FlagChecker.check(args);
         instance = new GloomGame();
-        if(Options.UNIT_TESTING_MODE)
+        if (Options.UNIT_TESTING_MODE)
             return;
         instance.load();
         instance.start();
@@ -239,6 +238,8 @@ public class GloomGame {
     }
 
     public void setScene(int scene) {
+        if (currentScene != null)
+            currentScene.reset();
         // check if it is range or close the game
         if (scene >= scenes.size() || scene < 0) {
             System.err.println("Scene out of range");
@@ -264,7 +265,7 @@ public class GloomGame {
         if (data.has("window")) {
             window.pushJson(data.get("window").getAsJsonObject());
             Translator.load(data.get("language").getAsString());
-            if(data.has("settings")) {
+            if (data.has("settings")) {
                 Options.load(data.get("settings").getAsJsonObject());
             }
         }
@@ -340,7 +341,7 @@ public class GloomGame {
                     }
                 });
 
-                writer.append("\nLast Scene: ").append(currentScene==null?"null" : currentScene.getClass().getSimpleName()).append("\n");
+                writer.append("\nLast Scene: ").append(currentScene == null ? "null" : currentScene.getClass().getSimpleName()).append("\n");
 
                 writer.append("\n\n----- EVENT LISTENERS -----\n");
                 eventHandler.getListeners().forEach(listener -> {
@@ -402,7 +403,15 @@ public class GloomGame {
     }
 
     public void setSceneHard(Scene scene) {
+        if (currentScene != null)
+            currentScene.reset();
         currentScene = scene;
+
+        scene.init();
+
+        if(scene instanceof Level level) {
+            window.setStaticTitleAppend(level.getName() + " by " + level.getAuthor());
+        }
 
         System.gc();
     }

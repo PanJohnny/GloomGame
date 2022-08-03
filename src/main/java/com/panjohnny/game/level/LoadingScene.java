@@ -11,13 +11,23 @@ import java.util.Random;
 public class LoadingScene extends Scene {
     private Level nextLevel;
     private LevelManager manager;
+
     @Override
     public Scene init() {
-        add(TextWidget.translated(200, 100, "menu.loading", new Random().nextBoolean()? Colors.RED:Colors.YELLOW, 60));
+        add(TextWidget.translated(200, 100, "menu.loading", new Random().nextBoolean() ? Colors.RED : Colors.YELLOW, 60));
         new Thread(() -> {
             nextLevel.init();
             manager.change(nextLevel);
-        }, "LVL-LOAD");
+            try {
+                Thread.currentThread().join();
+            } catch (InterruptedException e) {
+                System.err.println("Failed to join loading scene thread");
+                e.printStackTrace();
+                System.err.println(
+                        "--------------------------------------------------------------------------------"
+                );
+            }
+        }, "LVL-LOAD").start();
         return this;
     }
 }

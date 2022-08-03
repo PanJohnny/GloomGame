@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 public class Tile extends GameObject {
 
     private final BufferedImage tile;
+
     public Tile(int x, int y, int width, int height) {
         super(x, y, width, height);
 

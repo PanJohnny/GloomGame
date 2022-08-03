@@ -1,8 +1,6 @@
 package com.panjohnny.game.render;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
 

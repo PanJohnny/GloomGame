@@ -1,7 +1,6 @@
 package com.panjohnny.game.level;
 
 import com.panjohnny.game.GloomGame;
-import com.panjohnny.game.data.Translator;
 import com.panjohnny.game.event.EventListener;
 import com.panjohnny.game.event.EventTarget;
 import com.panjohnny.game.io.MouseClickEvent;

@@ -4,5 +4,6 @@ import com.google.gson.JsonElement;
 
 public interface Jsonable {
     JsonElement toJson();
+
     void pushJson(JsonElement json);
 }

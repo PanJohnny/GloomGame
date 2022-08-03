@@ -12,6 +12,7 @@ public class SliderWidget extends ImageWidget {
     private final BufferedImage thumb;
     private int sliderX = 0;
     private final Consumer<SliderWidget> onUpdate;
+
     public SliderWidget(int x, int y, Consumer<SliderWidget> onUpdate) {
         super("/assets/menu/widgets/slider/slider.png", x, y);
 
@@ -37,7 +38,7 @@ public class SliderWidget extends ImageWidget {
 
         if (Mouse.getInstance().isButtonLeftDown() && getActualBound().contains(Mouse.getInstance().getX(), Mouse.getInstance().getY())) {
             sliderX = Mouse.getInstance().getX() - getActualPosition().x;
-            if(onUpdate != null)
+            if (onUpdate != null)
                 onUpdate.accept(this);
         }
 

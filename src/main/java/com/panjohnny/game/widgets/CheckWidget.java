@@ -5,10 +5,11 @@ import com.panjohnny.game.GloomGame;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class CheckWidget extends ClickableImageWidget{
+public class CheckWidget extends ClickableImageWidget {
 
     private boolean checked = true;
     private final BufferedImage tick;
+
     public CheckWidget(int x, int y) {
         super("/assets/menu/widgets/check/check_bg.png", x, y);
 
@@ -20,7 +21,7 @@ public class CheckWidget extends ClickableImageWidget{
     public void draw(Graphics g) {
         super.draw(g);
 
-        if(checked) {
+        if (checked) {
             drawLayer(g, tick, 0, 0);
         }
     }

@@ -1,10 +1,7 @@
 package com.panjohnny.game.event;
 
-import com.google.common.cache.LoadingCache;
-
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +20,7 @@ public interface EventListener {
             for (MethodHandle methodHandle : hand) {
                 try {
                     // this is done to avoid class cast exceptions IDK why, but it works
-                    if(methodHandle.toString().contains(this.getClass().getSimpleName()))
+                    if (methodHandle.toString().contains(this.getClass().getSimpleName()))
                         methodHandle.invoke(this, event);
                 } catch (Throwable e) {
                     e.printStackTrace();
@@ -53,7 +50,7 @@ public interface EventListener {
         methodHandles.clear();
     }
 
-    default String createCacheDump(){
+    default String createCacheDump() {
         StringBuilder sb = new StringBuilder();
         for (Class<? extends Event<?>> event : methodHandles.keySet()) {
             sb.append(event.getSimpleName()).append("\n");

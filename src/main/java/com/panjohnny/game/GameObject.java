@@ -10,11 +10,12 @@ import java.util.function.Consumer;
 @Getter
 public abstract class GameObject implements Drawable {
     @Setter
-    private int x,y;
+    private int x, y;
     @Setter
     private int width;
     @Setter
     private int height;
+
     public GameObject(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
@@ -27,7 +28,7 @@ public abstract class GameObject implements Drawable {
     }
 
     public Rectangle getBound() {
-        return new Rectangle(x,y,width,height);
+        return new Rectangle(x, y, width, height);
     }
 
     public Rectangle getActualBound() {

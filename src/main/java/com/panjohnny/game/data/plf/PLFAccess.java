@@ -21,6 +21,7 @@ public @interface PLFAccess {
 
     /**
      * Used with CUSTOM_GETTERS, use empty string ({@code ""}) to use the default {@link #getterPrefix()}
+     *
      * @see #getterPrefix() for the variants
      */
     String[] specialGetterPrefixes() default {};

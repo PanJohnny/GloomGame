@@ -1,6 +1,5 @@
 package com.panjohnny.game.light;
 
-import com.google.common.cache.LoadingCache;
 import com.panjohnny.game.util.Pair;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,6 +16,7 @@ public class LightMap {
     private final int maxY;
 
     private final double[][] map;
+
     public LightMap(int minX, int minY, int maxX, int maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -28,8 +28,8 @@ public class LightMap {
 
     public void set(int x, int y, double value) {
         // check if int is in bounds else throw exception
-        if(isOutOfBounds(x,y))
-            throw new IndexOutOfBoundsException("x%d or y%d is out of bounds".formatted(x,y));
+        if (isOutOfBounds(x, y))
+            throw new IndexOutOfBoundsException("x%d or y%d is out of bounds".formatted(x, y));
 
         int realX = Math.abs(x - minX);
         int realY = Math.abs(y - minY);
@@ -39,8 +39,8 @@ public class LightMap {
 
     public double get(int x, int y) {
         // check if int is in bounds else throw exception
-        if(isOutOfBounds(x,y))
-            throw new IndexOutOfBoundsException("x%d or y%d is out of bounds".formatted(x,y));
+        if (isOutOfBounds(x, y))
+            throw new IndexOutOfBoundsException("x%d or y%d is out of bounds".formatted(x, y));
 
         int realX = Math.abs(x - minX);
         int realY = Math.abs(y - minY);
@@ -49,7 +49,7 @@ public class LightMap {
     }
 
     public boolean isOutOfBounds(int x, int y) {
-        return x>maxX || x<minX || y>maxY || y<minY;
+        return x > maxX || x < minX || y > maxY || y < minY;
     }
 
     public int getWidth() {
@@ -61,9 +61,9 @@ public class LightMap {
     }
 
     public void forEach(Consumer<Pair<Point, Double>> consumer) {
-        for(int x = minX; x<=maxX; x++) {
-            for(int y = minY; y<=maxY; y++) {
-                consumer.accept(new Pair<>(new Point(x,y), get(x,y)));
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                consumer.accept(new Pair<>(new Point(x, y), get(x, y)));
             }
         }
     }

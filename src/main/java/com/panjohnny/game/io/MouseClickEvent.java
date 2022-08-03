@@ -1,7 +1,6 @@
 package com.panjohnny.game.io;
 
 import com.panjohnny.game.event.Event;
-import com.panjohnny.game.event.EventHandler;
 
 import java.awt.event.MouseEvent;
 

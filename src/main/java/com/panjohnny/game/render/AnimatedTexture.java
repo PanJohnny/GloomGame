@@ -19,6 +19,7 @@ public class AnimatedTexture {
     // in MS
     private final long timeBetweenFrames;
     private long lastTime;
+
     public AnimatedTexture(BufferedImage image, int columns, int rows, long timeBetweenFrames) {
         this.image = image;
         this.columns = columns;
@@ -36,6 +37,7 @@ public class AnimatedTexture {
         this.timeBetweenFrames = timeBetweenFrames;
         lastTime = System.nanoTime();
     }
+
     public void next() {
         currentFrame++;
         if (currentFrame >= frames.size()) {
@@ -44,7 +46,7 @@ public class AnimatedTexture {
     }
 
     public void update() {
-        if(System.nanoTime() - lastTime > timeBetweenFrames * 1000000) {
+        if (System.nanoTime() - lastTime > timeBetweenFrames * 1000000) {
             next();
             lastTime = System.nanoTime();
         }

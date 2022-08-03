@@ -2,7 +2,6 @@ package com.panjohnny.game.widgets;
 
 import com.panjohnny.game.data.Translator;
 import com.panjohnny.game.data.plf.PLFAccess;
-import com.panjohnny.game.data.plf.PLFTools;
 import com.panjohnny.game.render.FontRenderer;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +14,7 @@ public class TextWidget extends Widget {
     private String text;
     private int size;
     private Color color;
+
     public TextWidget(int x, int y, String text, Color color, int size) {
         super(x, y, 0, 0);
 
@@ -23,7 +23,7 @@ public class TextWidget extends Widget {
         this.text = text;
     }
 
-    @PLFAccess(mode = PLFAccess.AccessMode.CUSTOM_GETTERS, specialGetterPrefixes = {"", "", "", "get↑", ""}, paramNames = {"x","y","text", "rgb", "size"})
+    @PLFAccess(mode = PLFAccess.AccessMode.CUSTOM_GETTERS, specialGetterPrefixes = {"", "", "", "get↑", ""}, paramNames = {"x", "y", "text", "rgb", "size"})
     public TextWidget(int x, int y, String text, int rgb, int size) {
         this(x, y, text, new Color(rgb), size);
     }

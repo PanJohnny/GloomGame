@@ -23,9 +23,9 @@ public final class SoundPlayer {
                 volume.setValue(volume.getMaximum() * Options.volume);
                 clip.start();
             } catch (Exception e) {
-                throw new TrackError(url,e);
+                throw new TrackError(url, e);
             }
-        }, "sound-thread-"+new Random().nextInt()).start();
+        }, "sound-thread-" + new Random().nextInt()).start();
     }
 
     public static synchronized void playSound(final String url, final int loop) {
@@ -40,7 +40,7 @@ public final class SoundPlayer {
             } catch (Exception e) {
                 throw new TrackError(url, e);
             }
-        },"sound-thread-"+new Random().nextInt()).start();
+        }, "sound-thread-" + new Random().nextInt()).start();
     }
 
     public static class TrackError extends Error {

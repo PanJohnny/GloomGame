@@ -19,7 +19,7 @@ public class ImageFetcher {
             @NonNull
             public BufferedImage load(@NonNull String key) throws Exception {
                 InputStream stream = ImageFetcher.class.getResourceAsStream(key);
-                if(Objects.isNull(stream)) {
+                if (Objects.isNull(stream)) {
                     throw new AssetNotFoundException(key);
                 }
                 return ImageIO.read(Objects.requireNonNull(ImageFetcher.class.getResourceAsStream(key)));

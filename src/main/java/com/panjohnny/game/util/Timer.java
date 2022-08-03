@@ -26,14 +26,14 @@ public class Timer<C> {
     }
 
     public void tick(C callbackContext) {
-        if(!isDone() && System.nanoTime() >= endTime) {
+        if (!isDone() && System.nanoTime() >= endTime) {
             callback.accept(callbackContext);
 
             stop();
         }
     }
 
-    public static long millisToNanos(long millis){
+    public static long millisToNanos(long millis) {
         return millis * 1000000;
     }
 

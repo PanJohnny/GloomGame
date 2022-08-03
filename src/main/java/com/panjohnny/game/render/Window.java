@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.panjohnny.game.data.Jsonable;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,6 +26,9 @@ public class Window implements Jsonable {
 
     public static final Cursor BLANK_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
     public static final Cursor DEFAULT_CURSOR;
+
+    @Setter
+    private String staticTitleAppend = "";
 
     static {
         try {
@@ -63,7 +67,7 @@ public class Window implements Jsonable {
 
     public Dimension transformSize(int width, int height) {
         float multiplier = ((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
-        return new Dimension((int) (width *  multiplier), (int) (height *  multiplier));
+        return new Dimension((int) (width * multiplier), (int) (height * multiplier));
     }
 
     public Dimension transformSize(Dimension d) {
@@ -95,7 +99,7 @@ public class Window implements Jsonable {
     }
 
     public void debug(String s) {
-        frame.setTitle(TITLE + " - " + s);
+        frame.setTitle(TITLE + " - " + s + " // " + staticTitleAppend);
     }
 
     @Override
@@ -122,7 +126,7 @@ public class Window implements Jsonable {
     }
 
     public float multiply(float original) {
-        return original *((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
+        return original * ((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
     }
 
     public void showCursor(boolean show) {

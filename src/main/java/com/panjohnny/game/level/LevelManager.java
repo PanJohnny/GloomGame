@@ -1,8 +1,6 @@
 package com.panjohnny.game.level;
 
 import com.panjohnny.game.GloomGame;
-import com.panjohnny.game.scenes.Scene;
-import com.panjohnny.game.util.Pair;
 import lombok.Getter;
 
 import java.util.LinkedList;
@@ -13,12 +11,14 @@ public class LevelManager {
     public LevelManager(Level first) {
         levels.add(first);
     }
+
     @Getter
     private Level current;
 
 
     /**
      * Changes the current level to the next one. Used only internally by LoadingScene.
+     *
      * @param levelToChange The level to change to.
      */
     public void change(Level levelToChange) {

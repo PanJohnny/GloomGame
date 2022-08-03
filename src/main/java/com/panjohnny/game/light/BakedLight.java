@@ -1,16 +1,10 @@
 package com.panjohnny.game.light;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.panjohnny.game.GameObject;
-import com.panjohnny.game.render.Drawable;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.concurrent.ExecutionException;
 
 public abstract class BakedLight extends GameObject {
     @Getter
@@ -25,7 +19,7 @@ public abstract class BakedLight extends GameObject {
     private BufferedImage image;
 
     public BakedLight(Color color, int x, int y) {
-        super(x, y, 0,0);
+        super(x, y, 0, 0);
         this.color = color;
         this.x = x;
         this.y = y;
@@ -33,7 +27,7 @@ public abstract class BakedLight extends GameObject {
 
     @Override
     public void draw(Graphics g) {
-        if(image != null) {
+        if (image != null) {
             g.drawImage(image, x, y, null);
         }
     }

@@ -1,12 +1,11 @@
 package com.panjohnny.game.widgets;
 
-import lombok.Builder;
-
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
 public class ClickableImageWidget extends ImageWidget implements InteractionWidget<Object> {
     private Consumer<ClickableImageWidget> onClick;
+
     public ClickableImageWidget(BufferedImage image, int width, int height, int x, int y) {
         super(image, width, height, x, y);
     }

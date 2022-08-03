@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
+
 import static com.panjohnny.game.io.KeyManager.*;
 
 public class Player extends GameObject implements EventListener {
@@ -22,7 +23,7 @@ public class Player extends GameObject implements EventListener {
         front = GloomGame.getInstance().getImageFetcher().getAnimation("/assets/player/player_idle.png", 2, 1, 1000L);
         runL = GloomGame.getInstance().getImageFetcher().getAnimation("/assets/player/player_run.png", 2, 1, 245L);
         runR = runL.getCopyFlippedHorizontally();
-
+        temp_pos = new Point(0, 0);
         run = runL;
         jumpTimer = Timer.createDummyTimer((a) -> a.setJumping(false), 300L);
     }
@@ -46,10 +47,10 @@ public class Player extends GameObject implements EventListener {
 
         jumpTimer.tick(this);
 
-        if(jumping)
+        if (jumping)
             velY = -2;
 
-        if(!onGround && !jumping) {
+        if (!onGround && !jumping) {
             velY = 5;
         }
 
@@ -73,7 +74,8 @@ public class Player extends GameObject implements EventListener {
 
 
     @Override
-    public void draw(Graphics g) {if (!moving) {
+    public void draw(Graphics g) {
+        if (!moving) {
             g.drawImage(front.getCurrentFrame(), temp_pos.x, temp_pos.y, temp_size.width, temp_size.height, null);
         } else if (run != null)
             g.drawImage(run.getCurrentFrame(), temp_pos.x, temp_pos.y, temp_size.width, temp_size.height, null);

@@ -1,7 +1,6 @@
 package com.panjohnny.game;
 
 import com.google.gson.JsonObject;
-import lombok.Setter;
 
 public class Options {
     public static final int MAX_FPS = 60;
@@ -17,6 +16,7 @@ public class Options {
     public static void setDev() {
         DEVELOPER_MODE = true;
     }
+
     public static void setLevel() {
         LEVEL_DESIGNER = true;
     }
