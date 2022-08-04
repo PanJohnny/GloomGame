@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -19,8 +21,8 @@ public class Window implements Jsonable {
 
     public static final String TITLE = "Gloom";
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    public static final int WIDTH = 1080;
+    public static final int HEIGHT = 720;
 
     public static final boolean MAXIMIZED = false;
 
@@ -41,12 +43,14 @@ public class Window implements Jsonable {
 
     public Window() {
         frame = new JFrame(TITLE);
+        // TODO lock aspect ratio
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - WIDTH / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - HEIGHT / 2);
         frame.add(Renderer.getInstance());
         frame.setResizable(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(800, 600));
+        frame.setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        frame.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         frame.setBackground(Colors.DARK);
 
         showCursor(true);
@@ -56,6 +60,9 @@ public class Window implements Jsonable {
         frame.setVisible(true);
     }
 
+    public double getAspectRatio() {
+        return (double)WIDTH / (double)HEIGHT;
+    }
     public Point transformPos(int x, int y) {
         float multiplier = ((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
         return new Point((int) (x * multiplier), (int) (y * multiplier));
