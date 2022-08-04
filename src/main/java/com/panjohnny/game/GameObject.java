@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.function.Consumer;
 
 @Getter
-public abstract class GameObject implements Drawable {
+public abstract class GameObject implements Drawable, Cloneable{
     @Setter
     private int x, y;
     @Setter
@@ -53,7 +53,23 @@ public abstract class GameObject implements Drawable {
         setHeight(height);
     }
 
-    public void apply(Consumer<GameObject> consumer) {
+    public GameObject apply(Consumer<GameObject> consumer) {
         consumer.accept(this);
+        return this;
+    }
+
+    @Override
+    public GameObject clone() {
+        try {
+            GameObject clone = (GameObject) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            clone.setX(getX());
+            clone.setY(getY());
+            clone.setWidth(getWidth());
+            clone.setHeight(getHeight());
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

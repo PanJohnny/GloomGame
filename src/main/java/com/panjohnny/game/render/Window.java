@@ -132,4 +132,8 @@ public class Window implements Jsonable {
     public void showCursor(boolean show) {
         frame.setCursor(show ? DEFAULT_CURSOR : BLANK_CURSOR);
     }
+
+    public void setCustomCursor(Cursor cursor) {
+        frame.setCursor(cursor);
+    }
 }
