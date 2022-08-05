@@ -125,6 +125,9 @@ public class GloomGame {
             int updates = 0;
             long lastTimer = System.currentTimeMillis();
             double delta = 0;
+
+            SoundPlayer.playSound("/assets/sfx/game_start.wav", 1);
+
             while (running) {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / nsPerFrame;

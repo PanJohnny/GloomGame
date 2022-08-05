@@ -12,7 +12,7 @@ public class ImageWidget extends Widget {
     private final BufferedImage image;
 
     public ImageWidget(BufferedImage image, int width, int height, int x, int y) {
-        super(x, y, width, height);
+        super(x, y, width == -1? image.getWidth() : width, height == -1? image.getHeight() : height);
 
         this.image = image;
     }
@@ -27,6 +27,10 @@ public class ImageWidget extends Widget {
         this.image = GloomGame.getInstance().getImageFetcher().get(path);
         if (width == 0 && height == 0) {
             this.setSize(image.getWidth(), image.getHeight());
+        } else if (width == 0) {
+            this.setWidth(image.getWidth());
+        } else if (height == 0) {
+            this.setHeight(image.getHeight());
         }
     }
 

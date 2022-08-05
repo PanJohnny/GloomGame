@@ -36,7 +36,11 @@ public final class SoundPlayer {
                         Objects.requireNonNull(GloomGame.class.getResourceAsStream(url))));
                 clip.open(inputStream);
                 clip.loop(loop);
+                FloatControl gainControl =
+                        (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+                gainControl.setValue(-(gainControl.getMaximum() * Options.volume));
                 clip.start();
+                Thread.currentThread().join();
             } catch (Exception e) {
                 throw new TrackError(url, e);
             }

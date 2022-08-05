@@ -11,7 +11,7 @@ public class Options {
     public static boolean UNIT_TESTING_MODE = false;
 
     //TODO make this a configurable option and working
-    public static float volume = 0.1f;
+    public static float volume = 1f;
 
     public static void setDev() {
         DEVELOPER_MODE = true;

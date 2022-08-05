@@ -20,7 +20,10 @@ import lombok.Setter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
+
+import com.panjohnny.game.render.Window;
 
 public class LevelDesigner extends Scene implements EventListener {
     private LinkedList<GameObject> current;
@@ -47,8 +50,8 @@ public class LevelDesigner extends Scene implements EventListener {
         GloomGame.registerEventListener(this);
         deleteCursor = Toolkit.getDefaultToolkit().createCustomCursor(GloomGame.getInstance().getImageFetcher().get("/assets/designer/trashcan.png"), new Point(16, 16), "trashcan cursor");
 
-        // LevelManager manager = new LevelManager(LevelParser.parseInternal("test.plf"));
-        // ButtonWidget test = new ButtonWidget(700, 10, (b) -> manager.load(0), buttonWidgetGraphicsPair -> ButtonWidget.overlay(buttonWidgetGraphicsPair, Colors.RED), "Test");
+        LevelManager manager = new LevelManager(LevelParser.parseInternal("test.plf"));
+        ButtonWidget test = new ButtonWidget(700, 10, (b) -> manager.load(0), buttonWidgetGraphicsPair -> ButtonWidget.overlay(buttonWidgetGraphicsPair, Colors.RED), "Test");
 
 
         ClickableImageWidget trashcan = createBasicImageButton("/assets/designer/trashcan.png", 10, 10, (b) -> {
@@ -61,17 +64,22 @@ public class LevelDesigner extends Scene implements EventListener {
             }
         });
 
-        debugText = new TextWidget(700, 20, "", Colors.YELLOW, 15);
+        debugText = new TextWidget(Window.WIDTH - 100, Window.HEIGHT - 20, "", Colors.YELLOW, 15);
         cursor = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         cursorDrawable = (g) -> g.drawImage(cursor, cursorX, cursorY, null);
-        //add(test);
+        add(test);
 
         add(debugText);
         add(trashcan);
         add(createTypePlacer("/assets/tiles/tile.png", 50, 10, new Tile()));
         add(createTypePlacer("/assets/tiles/bulb.png", 90, 11, new Bulb(0,0)));
 
+        List<ObjectOptionWidget.Option<?>> options = new LinkedList<>();
 
+        options.add(ObjectOptionWidget.Option.integer("Property1", 0, (a) -> {}));
+        options.add(ObjectOptionWidget.Option.integer("Property2", 0, (a) -> {}));
+        options.add(ObjectOptionWidget.Option.integer("Property3", 0, (a) -> {}));
+        add(new ObjectOptionWidget(options, Window.WIDTH - 100, 10, 30));
         current = new LinkedList<>();
         return this;
     }
@@ -122,6 +130,12 @@ public class LevelDesigner extends Scene implements EventListener {
                     ClickableImageWidget ciw = (ClickableImageWidget) d;
                     ciw.onInteract(ciw);
                 }
+            }
+
+            for(Drawable d : getOfType(ObjectOptionWidget.class)) {
+                    ObjectOptionWidget oow = (ObjectOptionWidget) d;
+                    if(oow.isOver(event.getX(), event.getY()))
+                        oow.onInteract(event);
             }
         }
     }

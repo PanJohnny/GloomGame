@@ -3,7 +3,9 @@ package com.panjohnny.game.io;
 import com.panjohnny.game.GloomGame;
 import com.panjohnny.game.render.Renderer;
 import lombok.Getter;
+import org.w3c.dom.css.Rect;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -107,5 +109,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
     public int getFixedY() {
         return getY() / Renderer.getInstance().getScaleY();
+    }
+
+    public Rectangle getFixedBounds() {
+        return new Rectangle(getFixedX(), getFixedY(), 1, 1);
     }
 }
