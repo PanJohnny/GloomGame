@@ -17,7 +17,9 @@ public class Renderer extends Canvas {
             createBufferStrategy(3);
             return;
         }
-        Graphics g = bs.getDrawGraphics();
+        Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+
+        g.scale(getScaleX(), getScaleY());
 
         g.clearRect(0, 0, getWidth(), getHeight());
         g.setColor(Colors.DARK);
@@ -29,5 +31,13 @@ public class Renderer extends Canvas {
 
         g.dispose();
         bs.show();
+    }
+
+    public int getScaleX() {
+        return Math.max(1, getWidth() / Window.WIDTH);
+    }
+
+    public int getScaleY() {
+        return Math.max(1, getHeight() / Window.HEIGHT);
     }
 }

@@ -35,9 +35,7 @@ public class Bulb extends BakedLight {
 
     @Override
     public void draw(Graphics g) {
-        Point pos = getActualPosition();
-
-        g.drawImage(lightBulb, pos.x, pos.y, null);
-        g.drawImage(getImage(), pos.x, pos.y + lightBulb.getHeight(), null);
+        g.drawImage(lightBulb, getX(), getY(), null);
+        g.drawImage(getImage(), getX() + lightBulb.getWidth()/4, getY() + lightBulb.getHeight(), null);
     }
 }

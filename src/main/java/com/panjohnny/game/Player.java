@@ -42,8 +42,8 @@ public class Player extends GameObject implements EventListener {
 
     @Override
     public void tick() {
-        temp_pos = getActualPosition();
-        temp_size = getActualSize();
+        temp_pos = new Point(getX(), getY());
+        temp_size = new Dimension(getWidth(), getHeight());
 
         jumpTimer.tick(this);
 
@@ -81,11 +81,6 @@ public class Player extends GameObject implements EventListener {
             g.drawImage(run.getCurrentFrame(), temp_pos.x, temp_pos.y, temp_size.width, temp_size.height, null);
     }
 
-    public Player reposition(int x, int y) {
-        setX(x);
-        setY(y);
-        return this;
-    }
 
     @Getter
     @Setter

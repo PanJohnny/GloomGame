@@ -21,10 +21,6 @@ public class SliderWidget extends ImageWidget {
         this.thumb = GloomGame.getInstance().getImageFetcher().get("/assets/menu/widgets/slider/slider_front.png");
     }
 
-    public SliderWidget(int x, int y) {
-        this(x, y, null);
-    }
-
     @Override
     public void draw(Graphics g) {
         super.draw(g);
@@ -36,18 +32,18 @@ public class SliderWidget extends ImageWidget {
     public void tick() {
         super.tick();
 
-        if (Mouse.getInstance().isButtonLeftDown() && getActualBound().contains(Mouse.getInstance().getX(), Mouse.getInstance().getY())) {
-            sliderX = Mouse.getInstance().getX() - getActualPosition().x;
+        if (Mouse.getInstance().isButtonLeftDown() && getBound().contains(Mouse.getInstance().getX(), Mouse.getInstance().getY())) {
+            sliderX = Mouse.getInstance().getX() - getX();
             if (onUpdate != null)
                 onUpdate.accept(this);
         }
 
-        sliderX = MathUtils.clamp(sliderX, 0, (int) (getActualSize().width - GloomGame.getInstance().getWindow().multiply(thumb.getWidth())));
+        sliderX = MathUtils.clamp(sliderX, 0, (int) (getWidth() - GloomGame.getInstance().getWindow().multiply(thumb.getWidth())));
     }
 
     public int getValue() {
         // return value 0 - 100
-        return (int) ((sliderX / (getActualSize().width - GloomGame.getInstance().getWindow().multiply(thumb.getWidth()))) * 100);
+        return (int) ((sliderX / (getWidth() - GloomGame.getInstance().getWindow().multiply(thumb.getWidth()))) * 100);
     }
 
     public float toFloat() {

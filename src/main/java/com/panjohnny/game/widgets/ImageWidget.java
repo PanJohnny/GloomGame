@@ -41,7 +41,7 @@ public class ImageWidget extends Widget {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(image, getActualPosition().x, getActualPosition().y, getActualSize().width, getActualSize().height, null);
+        g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
     }
 
     private double multiplier = 1.0D;
@@ -53,7 +53,6 @@ public class ImageWidget extends Widget {
     }
 
     public void drawLayer(Graphics g, BufferedImage i, int xOffset, int yOffset) {
-        Dimension d = GloomGame.getInstance().getWindow().transformSize(i.getWidth(), i.getHeight());
-        g.drawImage(i, getActualPosition().x + xOffset, getActualPosition().y + yOffset, (int) (d.getWidth() * multiplier), (int) (d.getHeight() * multiplier), null);
+        g.drawImage(i, getX() + xOffset, getY() + yOffset, (int) (getWidth() * multiplier), (int) (getHeight() * multiplier), null);
     }
 }

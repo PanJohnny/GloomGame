@@ -27,7 +27,7 @@ public class Tile extends GameObject {
         // detect any game object colliding if it is player then stop it from moving into the tile
         Scene scene = GloomGame.getInstance().getCurrentScene();
         for (GameObject object : scene.getObjects()) {
-            if (object.getActualBound().intersects(this.getActualBound()) && object instanceof Player player) {
+            if (object.getBound().intersects(this.getBound()) && object instanceof Player player) {
                 // find from which side the player is colliding and stop it from moving into the tile
                 if (player.getX() < this.getX()) {
                     player.setX(this.getX() - player.getWidth());
@@ -45,6 +45,6 @@ public class Tile extends GameObject {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(tile, getActualPosition().x, getActualPosition().y, getActualSize().width, getActualSize().height, null);
+        g.drawImage(tile, getX(), getY(), getWidth(), getHeight(), null);
     }
 }

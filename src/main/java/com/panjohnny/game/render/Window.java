@@ -21,10 +21,8 @@ public class Window implements Jsonable {
 
     public static final String TITLE = "Gloom";
 
-    public static final int WIDTH = 1080;
-    public static final int HEIGHT = 720;
-
-    public static final boolean MAXIMIZED = false;
+    public static final int WIDTH = 800;
+    public static final int HEIGHT = 450;
 
     public static final Cursor BLANK_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
     public static final Cursor DEFAULT_CURSOR;
@@ -44,6 +42,29 @@ public class Window implements Jsonable {
     public Window() {
         frame = new JFrame(TITLE);
         // TODO lock aspect ratio
+        frame.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent arg0) {
+                Rectangle b = arg0.getComponent().getBounds();
+                arg0.getComponent().setBounds(b.x, b.y, b.width, b.width*HEIGHT/WIDTH);
+                System.out.println(arg0.paramString());
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+
+            }
+        });
         frame.setSize(WIDTH, HEIGHT);
         frame.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width / 2 - WIDTH / 2, Toolkit.getDefaultToolkit().getScreenSize().height / 2 - HEIGHT / 2);
         frame.add(Renderer.getInstance());
@@ -60,37 +81,12 @@ public class Window implements Jsonable {
         frame.setVisible(true);
     }
 
-    public double getAspectRatio() {
-        return (double)WIDTH / (double)HEIGHT;
-    }
-    public Point transformPos(int x, int y) {
-        float multiplier = ((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
-        return new Point((int) (x * multiplier), (int) (y * multiplier));
-    }
-
-    public Point transformPos(Point p) {
-        return transformPos(p.x, p.y);
-    }
-
-    public Dimension transformSize(int width, int height) {
-        float multiplier = ((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
-        return new Dimension((int) (width * multiplier), (int) (height * multiplier));
-    }
-
-    public Dimension transformSize(Dimension d) {
-        return transformSize(d.width, d.height);
-    }
-
     public int getWidth() {
         return frame.getWidth();
     }
 
     public int getHeight() {
         return frame.getHeight();
-    }
-
-    public void setSize(int width, int height) {
-        frame.setSize(width, height);
     }
 
     public boolean isMaximized() {

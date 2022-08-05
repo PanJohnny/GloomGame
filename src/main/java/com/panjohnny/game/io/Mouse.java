@@ -1,6 +1,7 @@
 package com.panjohnny.game.io;
 
 import com.panjohnny.game.GloomGame;
+import com.panjohnny.game.render.Renderer;
 import lombok.Getter;
 
 import java.awt.event.MouseEvent;
@@ -98,5 +99,13 @@ public class Mouse implements MouseListener, MouseMotionListener {
             case MouseEvent.BUTTON2 -> buttonMiddleDown = false;
             case MouseEvent.BUTTON3 -> buttonRightDown = false;
         }
+    }
+
+    public int getFixedX() {
+        return getX() / Renderer.getInstance().getScaleX();
+    }
+
+    public int getFixedY() {
+        return getY() / Renderer.getInstance().getScaleY();
     }
 }

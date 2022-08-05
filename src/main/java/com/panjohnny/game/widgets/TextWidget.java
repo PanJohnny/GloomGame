@@ -39,11 +39,6 @@ public class TextWidget extends Widget {
 
     @Override
     public void draw(Graphics g) {
-        Point p = getActualPosition();
-        FontRenderer.draw(text, size, p.x, p.y, color, g);
-    }
-
-    public int getRGB() {
-        return color.getRGB();
+        FontRenderer.draw(text, size, getX(), getY(), color, g);
     }
 }
