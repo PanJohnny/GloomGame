@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 public final class LevelParser {
-    private static final double CURRENT_VERSION = 0.1;
+    public static final double CURRENT_VERSION = 0.1;
 
     @SneakyThrows
     public static Level parseInternal(String file) {

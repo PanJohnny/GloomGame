@@ -1,5 +1,6 @@
 package com.panjohnny.game.level;
 
+import com.panjohnny.game.GameObject;
 import com.panjohnny.game.GloomGame;
 import com.panjohnny.game.io.Mouse;
 import com.panjohnny.game.io.MouseClickEvent;
@@ -11,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -25,12 +28,15 @@ public class ObjectOptionWidget extends ImageWidget implements InteractionWidget
 
     private final int optionHeight;
 
-    public ObjectOptionWidget(List<Option<?>> options, int x, int y, int optionHeight) {
+    private final LevelDesigner levelDesigner;
+
+    public ObjectOptionWidget(List<Option<?>> options, int x, int y, int optionHeight, LevelDesigner levelDesigner) {
         super("/assets/designer/options/header.png", 128, 0, x, y);
         this.options = options;
 
         background = GloomGame.getInstance().getImageFetcher().get("/assets/designer/background.png");
         this.optionHeight = optionHeight;
+        this.levelDesigner = levelDesigner;
     }
 
     public Option<?> get(String name) {
@@ -42,25 +48,42 @@ public class ObjectOptionWidget extends ImageWidget implements InteractionWidget
         return null;
     }
 
+    public Object getValue(String name) {
+        Option<?> option = get(name);
+        if (option != null) {
+            return option.getValue();
+        }
+        return null;
+    }
+
     @Override
     public void draw(Graphics g) {
+        if(options.size() == 0 || levelDesigner.getSelected() == null || !levelDesigner.isInEditMode()) {
+            return;
+        }
         super.draw(g);
+        FontRenderer.draw("Options", 15, getX()+5, getY() + getHeight() - 2, Colors.DARK, g);
         g.drawImage(background, getX(), getY() + getHeight(), getWidth(), options.size() * optionHeight, null);
         // go through the options and draw them
         for (int i = 0; i < options.size(); i++) {
             Option<?> option = options.get(i);
-            FontRenderer.draw(option.name + ": " + option.value, 15, getX() + 5, getY() + getHeight() * 2 + i * optionHeight, Colors.DARK, g);
+            FontRenderer.draw(option.toString(), 15, getX() + 5, getY() + getHeight() * 2 + i * optionHeight, Colors.DARK, g);
         }
     }
 
     @Override
     public void onInteract(MouseClickEvent context) {
-        System.out.println("clicked");
+        System.out.println("Interacting with object options");
         for (int i = 0; i < options.size(); i++) {
             Option<?> option = options.get(i);
             Rectangle bound = new Rectangle(getX(), getY() + getHeight() + i * optionHeight, getWidth(), optionHeight);
             if (bound.intersects(Mouse.getInstance().getFixedBounds())) {
-                option.prompt();
+                if (context.isLeftClick())
+                    option.prompt();
+                else if (context.isRightClick())
+                    option.delete();
+                else if (context.isMiddleClick())
+                    option.debug();
             }
         }
     }
@@ -86,6 +109,15 @@ public class ObjectOptionWidget extends ImageWidget implements InteractionWidget
             return new Option<>(name, value, consumer, Integer::parseInt);
         }
 
+        public static Option<String> string(String name, String value, Consumer<Option<String>> consumer) {
+            return new Option<>(name, value, consumer, String::valueOf);
+        }
+
+        public static <T> Consumer<Option<T>> emptyConsumer() {
+            return option -> {
+            };
+        }
+
         private final String name;
         private T value;
         private final Consumer<Option<T>> onUpdate;
@@ -103,9 +135,25 @@ public class ObjectOptionWidget extends ImageWidget implements InteractionWidget
                 try {
                     update(converter.apply(s));
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Invalid value");
+                    JOptionPane.showMessageDialog(null, "Invalid value", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+        }
+
+        public void delete() {
+            update(converter.apply(value instanceof Number ? "0" : ""));
+        }
+
+        public void debug() {
+            JOptionPane.showMessageDialog(null, "The value is: %s".formatted(value), "Value of %s".formatted(name), JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        public String toString() {
+            String s = name + ": " + value;
+            if (s.length() >= 15) {
+                s = s.substring(0, 12) + "...";
+            }
+            return s;
         }
     }
 }

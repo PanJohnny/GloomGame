@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.util.LinkedList;
 
+/**
+ * Used to manage levels.
+ */
 public class LevelManager {
     private final LinkedList<Level> levels = new LinkedList<>();
 

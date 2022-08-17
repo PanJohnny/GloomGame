@@ -31,6 +31,10 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
 
+// TODO improve this class
+/**
+ * L'Juicy class :|
+ */
 public class GloomGame {
     private static GloomGame instance;
 
@@ -198,7 +202,7 @@ public class GloomGame {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            SoundPlayer.playSound("/assets/music/theme_song.wav", 1);
+            //SoundPlayer.playSound("/assets/music/theme_song.wav", 1);
         });
     }
 

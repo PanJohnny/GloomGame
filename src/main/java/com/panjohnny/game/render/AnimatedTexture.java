@@ -8,6 +8,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility to make more images from one image.
+ * @implNote Nice
+ */
 @Getter
 public class AnimatedTexture {
     private final BufferedImage image;
@@ -16,7 +20,10 @@ public class AnimatedTexture {
     private int currentFrame;
 
     private final List<BufferedImage> frames;
-    // in MS
+
+    /**
+     * In millis
+     */
     private final long timeBetweenFrames;
     private long lastTime;
 

@@ -11,21 +11,12 @@ import java.io.BufferedInputStream;
 import java.util.Objects;
 import java.util.Random;
 
+/**
+ * @apiNote Plays only internal files.
+ */
 public final class SoundPlayer {
     public static synchronized void playSound(final String url) {
-        new Thread(() -> {
-            try {
-                Clip clip = AudioSystem.getClip();
-                AudioInputStream inputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(
-                        Objects.requireNonNull(GloomGame.class.getResourceAsStream(url))));
-                clip.open(inputStream);
-                FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-                volume.setValue(volume.getMaximum() * Options.volume);
-                clip.start();
-            } catch (Exception e) {
-                throw new TrackError(url, e);
-            }
-        }, "sound-thread-" + new Random().nextInt()).start();
+        playSound(url,1);
     }
 
     public static synchronized void playSound(final String url, final int loop) {

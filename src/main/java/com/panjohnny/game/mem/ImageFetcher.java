@@ -11,6 +11,9 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.Objects;
 
+/**
+ * Used to load images. Uses caches and stuff.
+ */
 public class ImageFetcher {
     private final LoadingCache<String, BufferedImage> cache;
 

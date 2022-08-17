@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Used only for constructors. To determine which data should be exported. (which constructor should be used)
+ * This class is used to add costume cases for exporting the level to a plf file. And is also well documented, nice :).
  */
 @Target(ElementType.CONSTRUCTOR)
 @Retention(RetentionPolicy.RUNTIME)

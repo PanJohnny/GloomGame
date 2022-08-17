@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 
 import java.util.Random;
 
+/**
+ * Scene used while loading...
+ */
 @AllArgsConstructor
 public class LoadingScene extends Scene {
     private Level nextLevel;

@@ -13,7 +13,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.function.Consumer;
 
+/**
+ * Used to fetch local data.
+ * @implNote It is only JsonElements which sucks...
+ */
 public class DataFetcher {
+
+    // TODO make better...
+
     private final LoadingCache<String, JsonElement> cache;
 
     public DataFetcher() {

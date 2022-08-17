@@ -10,6 +10,10 @@ import com.panjohnny.game.widgets.ButtonWidget;
 import java.awt.*;
 import java.util.HashMap;
 
+/**
+ * This class is used for creating levels. I implemented the prefab system because I was to lazy to do something else. In the plf file you have list of prefabs
+ * that you can use to create your level. For example music(level_001) will set that the level should play music named level_001.
+ */
 public final class PLFPrefabs {
     public static final HashMap<String, Prefab> PREFABS = new HashMap<>();
 
@@ -58,6 +62,10 @@ public final class PLFPrefabs {
             // args[4] = color
 
             l.add(BakedLights.createTriangular(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), new Color(Integer.parseInt(args[4]))));
+        });
+
+        PREFABS.put("music", (l, args) -> {
+           l.setSong(args[0]);
         });
     }
 

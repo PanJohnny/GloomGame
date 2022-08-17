@@ -2,7 +2,11 @@ package com.panjohnny.game.light;
 
 import java.awt.*;
 
+/**
+ * I am not sure if these are baked lights but, they are pretty cool...
+ */
 public class BakedLights {
+    // TODO fix this and make it more efficient
     public static BakedLight createRounded(int x, int y, int radius, Color color) {
         BakedLight light = new BakedLight(color, x, y) {
             @Override

@@ -10,8 +10,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+/**
+ * Utility class for mouse handling.
+ */
 public class Mouse implements MouseListener, MouseMotionListener {
 
+    // TODO fix the mouse position stuff...
     private static Mouse instance;
 
     public static void init(GloomGame gloomGame) {
@@ -31,6 +35,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
     @Getter
     private boolean buttonLeftDown, buttonRightDown, buttonMiddleDown;
 
+    /**
+     * @implNote The GloomGame may be removed replaced with the static getter.
+     */
     public Mouse(GloomGame gloomGame) {
         gloomGame.getRenderer().addMouseListener(this);
         gloomGame.getRenderer().addMouseMotionListener(this);
@@ -77,6 +84,10 @@ public class Mouse implements MouseListener, MouseMotionListener {
         syncPos(e);
     }
 
+    /**
+     * Called to update local values.
+     * @param e The event to get data from
+     */
     private void syncPos(MouseEvent e) {
         x = e.getX();
         y = e.getY();
@@ -87,6 +98,10 @@ public class Mouse implements MouseListener, MouseMotionListener {
         altDown = e.isAltDown();
     }
 
+    /**
+     * Called to update local values.
+     * @param e The event to get data from
+     */
     private void buttonDown(MouseEvent e) {
         switch (e.getButton()) {
             case MouseEvent.BUTTON1 -> buttonLeftDown = true;
@@ -95,6 +110,10 @@ public class Mouse implements MouseListener, MouseMotionListener {
         }
     }
 
+    /**
+     * Called to update local values.
+     * @param e The event to get data from
+     */
     private void buttonUp(MouseEvent e) {
         switch (e.getButton()) {
             case MouseEvent.BUTTON1 -> buttonLeftDown = false;
@@ -103,12 +122,18 @@ public class Mouse implements MouseListener, MouseMotionListener {
         }
     }
 
+    /**
+     * Gets the fixed X to the screen scale.
+     */
     public int getFixedX() {
-        return getX() / Renderer.getInstance().getScaleX();
+        return getX() * Renderer.getInstance().getScaleX();
     }
 
+    /**
+     * Gets the fixed Y to the screen scale.
+     */
     public int getFixedY() {
-        return getY() / Renderer.getInstance().getScaleY();
+        return getY() * Renderer.getInstance().getScaleY();
     }
 
     public Rectangle getFixedBounds() {

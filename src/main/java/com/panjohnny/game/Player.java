@@ -59,6 +59,7 @@ public class Player extends GameObject implements EventListener {
 
         moving = velX != 0;
 
+        // NOTE: the front thing is terrible
         if (moving) {
             if (velX > 0)
                 run = runR;

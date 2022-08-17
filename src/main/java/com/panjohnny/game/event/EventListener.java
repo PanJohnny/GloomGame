@@ -8,6 +8,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This is technical note.
+ * I am aware that usage of reflections in personal project is not so good.
+ * Lemme' explain it:
+ * I want my project to be easily modifiable and extendable.
+ * That means someone may code something that will say "Hello" when someone presses F11 button.
+ * I am happy for that. Also I'm sure no-one will ever see this code. :(
+ * But if you are reading this and this repo is really unpopular, send me some message please. All feedback is valuable.
+ * +-----------------------------------------------------+
+ * Oh this should be used for the class description.
+ * +-----------------------------------------------------+
+ * This class is an interface. It is used by the classes that wants to listen to methods. When the class is registered we store all the events listened to int the hashmap.
+ * When the event is fired we check if the event is registered in the hashmap. If it is, we call the method.
+ * We also do some witchcraft to prevent ClassCastException. :D
+ * @author PanJohnny
+ */
 public interface EventListener {
     HashMap<Class<? extends Event<?>>, List<MethodHandle>> methodHandles = new HashMap<>();
 
@@ -19,8 +35,12 @@ public interface EventListener {
         if (hand != null) {
             for (MethodHandle methodHandle : hand) {
                 try {
-                    // this is done to avoid class cast exceptions IDK why, but it works
-                    if (methodHandle.toString().contains(this.getClass().getSimpleName()))
+                    /* This thing outsmarts system. (and also me :P, but I figured it out by myself debugging it)
+                     * You see the methodHandle.type().toString() is "(EventListenerName,SomethingEvent)void"
+                     * We check if this class is contained followed by ",".
+                     * That is because we don't want to confuse Level and LevelSomething for example.
+                     */
+                    if (methodHandle.type().toString().contains(getClass().getSimpleName() + ","))
                         methodHandle.invoke(this, event);
                 } catch (Throwable e) {
                     e.printStackTrace();

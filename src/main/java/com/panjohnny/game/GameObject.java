@@ -2,12 +2,14 @@ package com.panjohnny.game;
 
 import com.panjohnny.game.render.Drawable;
 import com.panjohnny.game.render.Renderer;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
 import java.util.function.Consumer;
 
+@Data
 @Getter
 public abstract class GameObject implements Drawable, Cloneable{
 

@@ -15,6 +15,14 @@ public final class KeyManager {
         MOVE_LEFT_KEYS = List.of(KeyEvent.VK_A, KeyEvent.VK_LEFT);
     }
 
+    /**
+     * Checks if the integer is in the collection.
+     * @implNote This could be probably handled better.
+     * @param keys Collection to check against
+     * @param keyCode The code of the key
+     * @return True if in fact the collection includes the key.
+     * @see KeyEvent
+     */
     public static boolean isOf(Collection<Integer> keys, int keyCode) {
         return keys.contains(keyCode);
     }

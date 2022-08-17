@@ -22,6 +22,7 @@ public class FontRenderer {
         graphics.drawString(text.toUpperCase(), x, y);
     }
 
+    // TODO fix this due to new rendering ways (native scaling)
     public static void drawCenteredText(String text, int size, int x, int y, Color color, Graphics graphics, Dimension d) {
         graphics.setFont(font.deriveFont(Font.PLAIN, size));
         graphics.setColor(color);
