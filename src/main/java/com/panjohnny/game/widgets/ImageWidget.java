@@ -10,9 +10,10 @@ public class ImageWidget extends Widget {
 
     @Getter
     private final BufferedImage image;
+    private double multiplier = 1.0D;
 
     public ImageWidget(BufferedImage image, int width, int height, int x, int y) {
-        super(x, y, width == -1? image.getWidth() : width, height == -1? image.getHeight() : height);
+        super(x, y, width == -1 ? image.getWidth() : width, height == -1 ? image.getHeight() : height);
 
         this.image = image;
     }
@@ -48,8 +49,6 @@ public class ImageWidget extends Widget {
         g.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
     }
 
-    private double multiplier = 1.0D;
-
     public ImageWidget multiplySize(double multiplier) {
         this.setSize((int) (getWidth() * multiplier), (int) (getHeight() * multiplier));
         this.multiplier = multiplier;
@@ -57,6 +56,6 @@ public class ImageWidget extends Widget {
     }
 
     public void drawLayer(Graphics g, BufferedImage i, int xOffset, int yOffset) {
-        g.drawImage(i, getX() + xOffset, getY() + yOffset, (int) (getWidth() * multiplier), (int) (getHeight() * multiplier), null);
+        g.drawImage(i, getX() + xOffset, getY() + yOffset, (int) (getScaledWidth() * multiplier), (int) (getScaledHeight() * multiplier), null);
     }
 }

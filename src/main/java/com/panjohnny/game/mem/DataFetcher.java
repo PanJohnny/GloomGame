@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 /**
  * Used to fetch local data.
+ *
  * @implNote It is only JsonElements which sucks...
  */
 public class DataFetcher {

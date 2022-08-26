@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 
 public class CheckWidget extends ClickableImageWidget {
 
-    private boolean checked = true;
     private final BufferedImage tick;
+    private boolean checked = true;
 
     public CheckWidget(int x, int y) {
         super("/assets/menu/widgets/check/check_bg.png", x, y);

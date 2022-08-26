@@ -6,12 +6,11 @@ import java.util.function.Consumer;
 
 @Getter
 public class Timer<C> {
+    private final long duration;
+    private final Consumer<C> callback;
     private long startTime;
     private long endTime;
-    private final long duration;
     private boolean done;
-
-    private final Consumer<C> callback;
 
     public Timer(long duration, Consumer<C> consumer) {
         this(duration, consumer, false);
@@ -25,16 +24,20 @@ public class Timer<C> {
         this.done = done;
     }
 
+    public static long millisToNanos(long millis) {
+        return millis * 1000000;
+    }
+
+    public static <T> Timer<T> createDummyTimer(Consumer<T> consumer, long duration) {
+        return new Timer<>(duration, consumer, true);
+    }
+
     public void tick(C callbackContext) {
         if (!isDone() && System.nanoTime() >= endTime) {
             callback.accept(callbackContext);
 
             stop();
         }
-    }
-
-    public static long millisToNanos(long millis) {
-        return millis * 1000000;
     }
 
     public void stop() {
@@ -48,9 +51,5 @@ public class Timer<C> {
         startTime = System.nanoTime();
         endTime = startTime + duration;
         done = false;
-    }
-
-    public static <T> Timer<T> createDummyTimer(Consumer<T> consumer, long duration) {
-        return new Timer<>(duration, consumer, true);
     }
 }

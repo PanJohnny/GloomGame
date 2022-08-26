@@ -14,13 +14,14 @@ public class FlagChecker {
     public static List<String> flags;
 
     static {
-        FLAGS.put("-dev", Options::setDev);
-        FLAGS.put("-level", Options::setLevel);
-        FLAGS.put("-only-init", Options::setOnlyInit);
+        FLAGS.put("-dev", () -> Options.set(Options.Option.DEVELOPER_MODE, true));
+        FLAGS.put("-level", () -> Options.set(Options.Option.LEVEL_DESIGNER, true));
+        FLAGS.put("-only-init", () -> Options.set(Options.Option.UNIT_TESTING, true));
     }
 
     /**
      * Used to check for flags in {@link com.panjohnny.game.GloomGame#main(String[])}
+     *
      * @param args String args of the main method
      * @see com.panjohnny.game.GloomGame#main(String[])
      */

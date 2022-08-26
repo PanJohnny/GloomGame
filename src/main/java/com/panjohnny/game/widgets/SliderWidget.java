@@ -10,8 +10,8 @@ import java.util.function.Consumer;
 
 public class SliderWidget extends ImageWidget {
     private final BufferedImage thumb;
-    private int sliderX = 0;
     private final Consumer<SliderWidget> onUpdate;
+    private int sliderX = 0;
 
     public SliderWidget(int x, int y, Consumer<SliderWidget> onUpdate) {
         super("/assets/menu/widgets/slider/slider.png", x, y);
@@ -32,18 +32,18 @@ public class SliderWidget extends ImageWidget {
     public void tick() {
         super.tick();
 
-        if (Mouse.getInstance().isButtonLeftDown() && getBound().contains(Mouse.getInstance().getX(), Mouse.getInstance().getY())) {
-            sliderX = Mouse.getInstance().getX() - getX();
+        if (Mouse.getInstance().isButtonLeftDown() && getBound().contains(Mouse.getInstance().getFixedX(), Mouse.getInstance().getFixedY())) {
+            sliderX = Mouse.getInstance().getFixedX() - getX();
             if (onUpdate != null)
                 onUpdate.accept(this);
         }
 
-        sliderX = MathUtils.clamp(sliderX, 0, (int) (getWidth() - GloomGame.getInstance().getWindow().multiply(thumb.getWidth())));
+        sliderX = MathUtils.clamp(sliderX, 0, getWidth() - thumb.getWidth());
     }
 
     public int getValue() {
         // return value 0 - 100
-        return (int) ((sliderX / (getWidth() - GloomGame.getInstance().getWindow().multiply(thumb.getWidth()))) * 100);
+        return sliderX / (getWidth() - thumb.getWidth()) * 100;
     }
 
     public float toFloat() {

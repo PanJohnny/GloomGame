@@ -8,8 +8,8 @@ import com.panjohnny.game.GloomGame;
  * Class used to translate files.
  * <h1>Translation format</h1>
  * <p>
- *     Translation files do have their format. This is a example<code>
- *         <pre>
+ * Translation files do have their format. This is a example<code>
+ * <pre>
  * {
  *   "name": "American English",
  *   "code": "en_us",
@@ -27,10 +27,11 @@ import com.panjohnny.game.GloomGame;
  *   "menu.loading": "Loading..."
  * }
  *         </pre>
- *     </code>
- *     First you will provide some basic information and then you add the keys.
- *     NOTE: version is on the person who creates the file. This feature might get removed.
+ * </code>
+ * First you will provide some basic information and then you add the keys.
+ * NOTE: version is on the person who creates the file. This feature might get removed.
  * </p>
+ *
  * @implNote There is a problem with font file not supporting non-basic characters. I need to make new font.
  */
 public final class Translator {
@@ -46,6 +47,7 @@ public final class Translator {
 
     /**
      * Used to translate key to string.
+     *
      * @param key Key to get
      * @return If no key is found the key would be found it would try with the default language, then key will be returned.
      */
@@ -62,6 +64,7 @@ public final class Translator {
 
     /**
      * Fetches inner language.
+     *
      * @param lang Name of the language file (e. g. en_us)
      */
     public static void setLanguage(String lang) {
@@ -70,6 +73,7 @@ public final class Translator {
 
     /**
      * Loads outer lang file (from <code>./data/assets/lang/{lang}.json</code>
+     *
      * @param lang The name of the lang file.
      */
     public static void loadOuterLanguage(String lang) {
@@ -82,6 +86,7 @@ public final class Translator {
 
     /**
      * Validates the JsonObject if it contains mandatory values and is not a null.
+     *
      * @param set The object to validate
      * @return True if object is valid
      */
@@ -99,6 +104,7 @@ public final class Translator {
 
     /**
      * Default way to load the file. If there is no inner outer is loaded.
+     *
      * @param lang The name of the lang file.
      */
     public static void load(String lang) {

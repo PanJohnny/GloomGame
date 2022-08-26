@@ -17,6 +17,18 @@ public class Player extends GameObject implements EventListener {
     private final AnimatedTexture runR, runL;
 
     private final Timer<Player> jumpTimer;
+    private Point temp_pos;
+    private Dimension temp_size;
+    private boolean moving = false;
+    private AnimatedTexture run;
+    @Setter
+    private boolean onGround = false;
+    @Getter
+    @Setter
+    private boolean jumping = false;
+    @Getter
+    @Setter
+    private int velX = 0, velY = 0;
 
     public Player(int x, int y) {
         super(x, y, 32, 64);
@@ -27,18 +39,6 @@ public class Player extends GameObject implements EventListener {
         run = runL;
         jumpTimer = Timer.createDummyTimer((a) -> a.setJumping(false), 300L);
     }
-
-    private Point temp_pos;
-    private Dimension temp_size;
-    private boolean moving = false;
-    private AnimatedTexture run;
-
-    @Setter
-    private boolean onGround = false;
-
-    @Getter
-    @Setter
-    private boolean jumping = false;
 
     @Override
     public void tick() {
@@ -73,7 +73,6 @@ public class Player extends GameObject implements EventListener {
         onGround = false;
     }
 
-
     @Override
     public void draw(Graphics g) {
         if (!moving) {
@@ -81,11 +80,6 @@ public class Player extends GameObject implements EventListener {
         } else if (run != null)
             g.drawImage(run.getCurrentFrame(), temp_pos.x, temp_pos.y, temp_size.width, temp_size.height, null);
     }
-
-
-    @Getter
-    @Setter
-    private int velX = 0, velY = 0;
 
     @EventTarget(KeyboardEvent.class)
     public void onKeyboardEvent(KeyboardEvent e) {

@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Utility to make more images from one image.
+ *
  * @implNote Nice
  */
 @Getter
@@ -17,14 +18,12 @@ public class AnimatedTexture {
     private final BufferedImage image;
     private final int columns;
     private final int rows;
-    private int currentFrame;
-
     private final List<BufferedImage> frames;
-
     /**
      * In millis
      */
     private final long timeBetweenFrames;
+    private int currentFrame;
     private long lastTime;
 
     public AnimatedTexture(BufferedImage image, int columns, int rows, long timeBetweenFrames) {

@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 @Data
 @Getter
-public abstract class GameObject implements Drawable, Cloneable{
+public abstract class GameObject implements Drawable, Cloneable {
 
     @Setter
     private int x, y;
@@ -32,7 +32,6 @@ public abstract class GameObject implements Drawable, Cloneable{
     }
 
     /**
-     *
      * @return the scaled bound of the object
      */
     public Rectangle getBound() {
@@ -67,18 +66,18 @@ public abstract class GameObject implements Drawable, Cloneable{
     }
 
     public int getScaledX() {
-        return x*Renderer.getInstance().getScaleX();
+        return x * Renderer.getInstance().getScaleX();
     }
 
     public int getScaledY() {
-        return y*Renderer.getInstance().getScaleY();
+        return y * Renderer.getInstance().getScaleY();
     }
 
     public int getScaledWidth() {
-        return width*Renderer.getInstance().getScaleX();
+        return width * Renderer.getInstance().getScaleX();
     }
 
     public int getScaledHeight() {
-        return height*Renderer.getInstance().getScaleY();
+        return height * Renderer.getInstance().getScaleY();
     }
 }

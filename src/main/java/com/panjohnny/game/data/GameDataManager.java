@@ -13,7 +13,19 @@ import java.io.*;
 public class GameDataManager {
 
     /**
+     * Checks if file exists in the ./data/ folder.
+     *
+     * @param path Path to the file
+     * @return True if the file exists
+     * @see File#exists()
+     */
+    public static boolean exists(String path) {
+        return new File("data/" + path).exists();
+    }
+
+    /**
      * Loads a external file as a JsonElement
+     *
      * @param fileName The name to the file. (may include paths)
      */
     public JsonElement loadFile(String fileName) {
@@ -50,7 +62,8 @@ public class GameDataManager {
 
     /**
      * Saves external file with JsonElement.
-     * @param dataSet The JsonElement to save to the file.
+     *
+     * @param dataSet  The JsonElement to save to the file.
      * @param fileName The name to the file. (may include paths)
      */
     public void saveFile(@NonNull JsonElement dataSet, String fileName) {
@@ -83,8 +96,9 @@ public class GameDataManager {
 
     /**
      * Writes string to the file
+     *
      * @param fileName The name to the file. (may include paths)
-     * @param content The string to save.
+     * @param content  The string to save.
      */
     public void writeFile(String fileName, String content) {
         // get the file in current folder in /data/%fileName% format if dir or file does not exist create it if that is not possible throw RuntimeException
@@ -112,15 +126,5 @@ public class GameDataManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Checks if file exists in the ./data/ folder.
-     * @param path Path to the file
-     * @return True if the file exists
-     * @see File#exists() 
-     */
-    public static boolean exists(String path) {
-        return new File("data/" + path).exists();
     }
 }

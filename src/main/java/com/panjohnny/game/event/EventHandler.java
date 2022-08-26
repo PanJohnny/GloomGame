@@ -10,6 +10,7 @@ public class EventHandler {
 
     /**
      * Registers a listener.
+     *
      * @param listener Listener to register.
      */
     public void register(EventListener listener) {
@@ -21,6 +22,7 @@ public class EventHandler {
 
     /**
      * Unregisters listener and clears it cache.
+     *
      * @param listener The listener to unregister.
      */
     public void unregister(EventListener listener) {
@@ -30,6 +32,7 @@ public class EventHandler {
 
     /**
      * Fires an event.
+     *
      * @param event Event to dispatch to all the listeners.
      * @implNote If the listener wants that event, is handled on its side. Which may be a security flaw.
      */

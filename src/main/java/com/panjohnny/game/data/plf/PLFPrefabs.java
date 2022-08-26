@@ -32,7 +32,7 @@ public final class PLFPrefabs {
         PREFABS.put("events", (l, args) -> GloomGame.registerEventListener(l));
 
         /*
-        *** LIGHTS ***
+         *** LIGHTS ***
          */
         PREFABS.put("bl-round", (l, args) -> {
             // adds rounded light to the level
@@ -64,9 +64,7 @@ public final class PLFPrefabs {
             l.add(BakedLights.createTriangular(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), new Color(Integer.parseInt(args[4]))));
         });
 
-        PREFABS.put("music", (l, args) -> {
-           l.setSong(args[0]);
-        });
+        PREFABS.put("music", (l, args) -> l.setSong(args[0]));
     }
 
     public static void invokeSafe(String str, Level l) {

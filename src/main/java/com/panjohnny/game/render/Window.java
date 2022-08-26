@@ -16,19 +16,11 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Window implements Jsonable {
-    @Getter
-    private final JFrame frame;
-
     public static final String TITLE = "Gloom";
-
     public static final int WIDTH = 800;
     public static final int HEIGHT = 450;
-
     public static final Cursor BLANK_CURSOR = Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "blank cursor");
     public static final Cursor DEFAULT_CURSOR;
-
-    @Setter
-    private String staticTitleAppend = "";
 
     static {
         try {
@@ -39,6 +31,11 @@ public class Window implements Jsonable {
         }
     }
 
+    @Getter
+    private final JFrame frame;
+    @Setter
+    private String staticTitleAppend = "";
+
     public Window() {
         frame = new JFrame(TITLE);
         // TODO lock aspect ratio
@@ -46,7 +43,7 @@ public class Window implements Jsonable {
             @Override
             public void componentResized(ComponentEvent arg0) {
                 Rectangle b = arg0.getComponent().getBounds();
-                arg0.getComponent().setBounds(b.x, b.y, b.width, b.width*HEIGHT/WIDTH);
+                arg0.getComponent().setBounds(b.x, b.y, b.width, b.width * HEIGHT / WIDTH);
                 System.out.println(arg0.paramString());
             }
 

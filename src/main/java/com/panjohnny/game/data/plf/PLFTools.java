@@ -16,7 +16,13 @@ import static com.google.common.primitives.Chars.contains;
  */
 public final class PLFTools {
     /**
+     * List of illegal characters for {@link #makeStringSuitable(String)}.
+     */
+    public static final char[] ILLEGAL_STRING_CHARS = new char[]{',', '(', ')', '\\', '}'};
+
+    /**
      * This is more lightweight way than other methods. It basically only outputs the x, y, width and height of the object.
+     *
      * @param object The object to get the fields from.
      * @return String interpreted version of the object. Such as {@code ObjectName(x,y,width,height)}
      * @see GameObject
@@ -27,13 +33,14 @@ public final class PLFTools {
 
     /**
      * Smarty stringifies array of objects. That basically means it will try the {@link #stringify(Object)} but if it fails it will use the {@link #stringifyObject(GameObject)} method.
+     *
      * @param objects The objects to stringify.
      * @return String version of the objects in []
      * @see #stringify(Object)
      * @see #stringifyObject(GameObject)
      */
     public static String stringifyArraySmart(Collection<GameObject> objects) {
-        if(objects.size() == 0) {
+        if (objects.size() == 0) {
             return "[]";
         }
         StringBuilder sb = new StringBuilder();
@@ -56,6 +63,7 @@ public final class PLFTools {
 
     /**
      * Turns string into {@link GameObject}
+     *
      * @param string The string to objectify.
      * @return The objectified string.
      * @see GameObject
@@ -74,10 +82,11 @@ public final class PLFTools {
 
     /**
      * Converts string to object. Currently only supports primitive types and strings.
-     * @apiNote Only primitive types and strings are supported, objects in objects are not currently implemented.
+     *
      * @param string String to convert to object.
      * @return The objectified string.
      * @throws IllegalArgumentException if string was unable to be converted.
+     * @apiNote Only primitive types and strings are supported, objects in objects are not currently implemented.
      * @implNote I am so happy that I managed to do this.
      */
     public static @NonNull Object convertString(@NonNull String string) throws InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException {
@@ -126,6 +135,7 @@ public final class PLFTools {
 
     /**
      * Generates prepend string from type. Such as package.subpackage.ClassName(
+     *
      * @param type The type to get the prepend string from.
      * @return Prepend string from type. Such as package.subpackage.ClassName(
      */
@@ -135,17 +145,18 @@ public final class PLFTools {
 
     /**
      * Stringifies an object. Using reflections.
-     * @implSpec This should be used only on those classes that are annotated with {@link PLFAccess}
+     *
      * @param object Object that will be converted to string.
      * @return Empty string if there is no constructors, otherwise the string representation.
-     * @see PLFAccess
      * @throws IllegalAccessException If the object is not accessible. | If the annotation is used badly.
+     * @implSpec This should be used only on those classes that are annotated with {@link PLFAccess}
+     * @see PLFAccess
      */
     public static String stringify(Object object) throws IllegalAccessException, InvocationTargetException {
         // search for constructor with @PLFAccess
         Class<?> clazz = object.getClass();
         Constructor<?>[] constructors = Arrays.stream(clazz.getConstructors()).filter((c) -> c.isAnnotationPresent(PLFAccess.class)).toArray(Constructor[]::new);
-        if(constructors.length == 0)
+        if (constructors.length == 0)
             return "";
 
         if (constructors.length != 1)
@@ -229,22 +240,19 @@ public final class PLFTools {
 
     /**
      * Used for getters and custom getters for {@link PLFAccess}.
-     * @see PLFAccess
-     * @param name The name of the variable. Such as {@code x};
+     *
+     * @param name  The name of the variable. Such as {@code x};
      * @param logic The logic to apply to the name. Such as {@code get⌃} (⌃ if the next char is upper case). Please see {@link PLFAccess#getterPrefix()} for more information.
      * @return The translated name. Such as {@code getX}.
+     * @see PLFAccess
      */
     public static String applyAccessGetterLogic(String name, String logic) {
         return logic.substring(0, logic.length() - 1) + (logic.endsWith("⌃") ? name.replaceFirst("[A-z]", String.valueOf(name.toCharArray()[0]).toUpperCase()) : (logic.endsWith("↑") ? name.toUpperCase() : name));
     }
 
     /**
-     * List of illegal characters for {@link #makeStringSuitable(String)}.
-     */
-    public static final char[] ILLEGAL_STRING_CHARS = new char[]{',', '(', ')', '\\', '}'};
-
-    /**
      * Converts a string to a string that is suitable for use in a string literal. This is done by replacing illegal characters with escape sequence.
+     *
      * @param string The string to make suitable.
      * @return Suitable string.
      * @see #returnStringToOriginalForm(String)
@@ -266,6 +274,7 @@ public final class PLFTools {
 
     /**
      * Reverts {@link #makeStringSuitable(String)}
+     *
      * @param string String to unescape.
      * @return Original string.
      * @see #makeStringSuitable(String)
@@ -290,6 +299,7 @@ public final class PLFTools {
 
     /**
      * Returns type of string version of object.
+     *
      * @param ob The object to get the type of.
      * @return The class that the object is type of.
      * @throws ClassNotFoundException If there is no class matching that object.

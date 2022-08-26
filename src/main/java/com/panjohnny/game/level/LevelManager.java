@@ -10,14 +10,12 @@ import java.util.LinkedList;
  */
 public class LevelManager {
     private final LinkedList<Level> levels = new LinkedList<>();
+    @Getter
+    private Level current;
 
     public LevelManager(Level first) {
         levels.add(first);
     }
-
-    @Getter
-    private Level current;
-
 
     /**
      * Changes the current level to the next one. Used only internally by LoadingScene.
@@ -25,6 +23,8 @@ public class LevelManager {
      * @param levelToChange The level to change to.
      */
     public void change(Level levelToChange) {
+        if (current != null)
+            GloomGame.unregisterEventListener(current);
         current = levelToChange;
 
         GloomGame.getInstance().setSceneHard(current);

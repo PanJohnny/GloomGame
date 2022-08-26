@@ -2,6 +2,7 @@ package com.panjohnny.game.render;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 
 public class Renderer extends Canvas {
@@ -25,8 +26,12 @@ public class Renderer extends Canvas {
         g.setColor(Colors.DARK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        for (Drawable drawable : drawables) {
-            drawable.draw(g);
+        try {
+            for (Drawable drawable : drawables) {
+                drawable.draw(g);
+            }
+        } catch (ConcurrentModificationException ignored) {
+            FontRenderer.draw("Loading...", 50, 100, 100, Colors.YELLOW, g);
         }
 
         g.dispose();

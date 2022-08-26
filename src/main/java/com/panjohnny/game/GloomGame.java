@@ -32,6 +32,7 @@ import java.util.Properties;
 import java.util.Random;
 
 // TODO improve this class
+
 /**
  * L'Juicy class :|
  */
@@ -39,33 +40,25 @@ public class GloomGame {
     private static GloomGame instance;
 
     private final Thread gameThread;
-    private boolean running;
-
-    @Getter
-    private Window window;
-
     @Getter
     private final Renderer renderer;
-
-    @Getter
-    private int sceneIndex;
-
     @Getter
     private final GameDataManager dataManager;
-
     private final ArrayList<Scene> scenes;
-    @Getter
-    private Scene currentScene;
-    private boolean currentSceneLoaded = true;
-
     @Getter
     private final ImageFetcher imageFetcher;
     @Getter
     private final DataFetcher dataFetcher;
-
     @Getter
     private final EventHandler eventHandler;
-
+    private boolean running;
+    @Getter
+    private Window window;
+    @Getter
+    private int sceneIndex;
+    @Getter
+    private Scene currentScene;
+    private boolean currentSceneLoaded = true;
     @Getter
     private Player player;
 
@@ -97,10 +90,7 @@ public class GloomGame {
                 // print system properties
                 sb.append("---------- SYSTEM PROPERTIES ----------\n");
                 Properties props = System.getProperties();
-                // print os, java version, and os version
-                sb.append("OS: ").append(System.getProperty("os.name")).append("\n");
-                sb.append("Java version: ").append(System.getProperty("java.version")).append("\n");
-                sb.append("OS version: ").append(System.getProperty("os.version")).append("\n");
+                props.forEach((key, value) -> sb.append(key).append(value).append("\n"));
                 sb.append("----\n\n");
                 // print flags that program was started with
                 sb.append("---------- ARGUMENTS ----------\n");
@@ -124,7 +114,7 @@ public class GloomGame {
             });
             running = true;
             long lastTime = System.nanoTime();
-            double nsPerFrame = 1000000000D / Options.MAX_FPS;
+            double nsPerFrame = 1000000000D / Options.getInt(Options.Option.MAX_FPS);
             int frames = 0;
             int updates = 0;
             long lastTimer = System.currentTimeMillis();
@@ -149,7 +139,7 @@ public class GloomGame {
                 }
                 if (System.currentTimeMillis() - lastTimer >= 1000) {
                     lastTimer += 1000;
-                    if (Options.DEVELOPER_MODE) {
+                    if (Options.getBoolean(Options.Option.DEVELOPER_MODE)) {
                         System.out.printf("FPS: %d, UPS: %d%n", frames, updates);
                         if (window != null) {
                             window.debug(String.format("FPS: %d, UPS: %d", frames, updates));
@@ -161,7 +151,7 @@ public class GloomGame {
             }
         }, "Main Thread");
 
-        if (!Options.UNIT_TESTING_MODE)
+        if (!Options.getBoolean(Options.Option.UNIT_TESTING))
             Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
         renderer = Renderer.getInstance();
@@ -185,7 +175,7 @@ public class GloomGame {
             }
         });
 
-        if (!Options.LEVEL_DESIGNER) {
+        if (!Options.getBoolean(Options.Option.LEVEL_DESIGNER)) {
             scenes.add(new MainMenu());
             scenes.add(new OptionScene());
             scenes.add(new TestScene());
@@ -209,10 +199,26 @@ public class GloomGame {
     public static void main(String[] args) {
         FlagChecker.check(args);
         instance = new GloomGame();
-        if (Options.UNIT_TESTING_MODE)
+        if (Options.getBoolean(Options.Option.UNIT_TESTING))
             return;
         instance.load();
         instance.start();
+    }
+
+    public static GloomGame getInstance() {
+        return instance;
+    }
+
+    public static void fireEvent(Event<?> event) {
+        getInstance().getEventHandler().fire(event);
+    }
+
+    public static void registerEventListener(EventListener listener) {
+        getInstance().getEventHandler().register(listener);
+    }
+
+    public static void unregisterEventListener(EventListener listener) {
+        getInstance().getEventHandler().unregister(listener);
     }
 
     public synchronized void start() {
@@ -278,23 +284,11 @@ public class GloomGame {
         }
     }
 
-    public static GloomGame getInstance() {
-        return instance;
-    }
-
-    public static void fireEvent(Event<?> event) {
-        getInstance().getEventHandler().fire(event);
-    }
-
-    public static void registerEventListener(EventListener listener) {
-        getInstance().getEventHandler().register(listener);
-    }
-
     private void shutdown() {
         System.out.println("Saving...");
         save();
 
-        if (Options.DEVELOPER_MODE) {
+        if (Options.getBoolean(Options.Option.DEVELOPER_MODE)) {
             // delete all files in the folder ending _DUMP
             File folder = new File(".");
             File dumpFolder = new File(folder.getAbsolutePath() + "/_DUMP");
@@ -416,7 +410,7 @@ public class GloomGame {
 
         scene.init();
 
-        if(scene instanceof Level level) {
+        if (scene instanceof Level level) {
             window.setStaticTitleAppend(level.getName() + " by " + level.getAuthor());
         }
 

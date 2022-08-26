@@ -24,11 +24,18 @@ public class ButtonWidget extends ClickableImageWidget {
         setOnClick(i -> onClick.accept(this));
     }
 
+    public static void overlay(Pair<ButtonWidget, Graphics> pair, Color color) {
+        Graphics g = pair.second();
+        ButtonWidget w = pair.first();
+        g.setColor(color);
+        g.fillRect(w.getScaledX(), w.getScaledY(), w.getScaledWidth(), w.getScaledHeight());
+    }
+
     @Override
     public void draw(Graphics g) {
         super.draw(g);
         // Draw text centered on the button using FontRenderer
-        FontRenderer.drawCenteredText(text, (int) ((getHeight() / 2) - GloomGame.getInstance().getWindow().multiply(text.length() * .5f)), getX(), getY(), Colors.YELLOW, g, new Dimension(getHeight(), getWidth()));
+        FontRenderer.drawCenteredText(text, (int) ((getHeight() / 2) - text.length() * .5f), getX(), getY(), Colors.YELLOW, g, new Dimension(getHeight(), getWidth()));
         if (WidgetUtil.isMouseOver(this)) {
             onHover.accept(new Pair<>(this, g));
         }
@@ -37,12 +44,5 @@ public class ButtonWidget extends ClickableImageWidget {
     @Override
     public ButtonWidget multiplySize(double scale) {
         return (ButtonWidget) super.multiplySize(scale);
-    }
-
-    public static void overlay(Pair<ButtonWidget, Graphics> pair, Color color) {
-        Graphics g = pair.second();
-        ButtonWidget w = pair.first();
-        g.setColor(color);
-        g.fillRect(w.getScaledX(), w.getScaledY(), w.getScaledWidth(), w.getScaledHeight());
     }
 }

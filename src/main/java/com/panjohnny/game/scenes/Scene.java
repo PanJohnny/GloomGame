@@ -1,7 +1,6 @@
 package com.panjohnny.game.scenes;
 
 import com.panjohnny.game.GameObject;
-import com.panjohnny.game.GloomGame;
 import com.panjohnny.game.render.Drawable;
 import com.panjohnny.game.render.Renderer;
 import lombok.Getter;

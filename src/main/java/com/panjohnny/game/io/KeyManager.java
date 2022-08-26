@@ -17,10 +17,11 @@ public final class KeyManager {
 
     /**
      * Checks if the integer is in the collection.
-     * @implNote This could be probably handled better.
-     * @param keys Collection to check against
+     *
+     * @param keys    Collection to check against
      * @param keyCode The code of the key
      * @return True if in fact the collection includes the key.
+     * @implNote This could be probably handled better.
      * @see KeyEvent
      */
     public static boolean isOf(Collection<Integer> keys, int keyCode) {

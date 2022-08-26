@@ -11,6 +11,7 @@ import com.panjohnny.game.light.Bulb;
 import com.panjohnny.game.render.Colors;
 import com.panjohnny.game.render.Drawable;
 import com.panjohnny.game.render.Renderer;
+import com.panjohnny.game.render.Window;
 import com.panjohnny.game.scenes.Scene;
 import com.panjohnny.game.tile.Tile;
 import com.panjohnny.game.util.ImageUtil;
@@ -18,16 +19,13 @@ import com.panjohnny.game.widgets.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
-
-import com.panjohnny.game.render.Window;
-
-import javax.swing.*;
 
 /**
  * Used to design levels.
@@ -84,7 +82,7 @@ public class LevelDesigner extends Scene implements EventListener {
             ObjectOptionWidget widget = new ObjectOptionWidget(options, Window.WIDTH / 2 - 50, 10, 30, this);
 
             List<GameObject> clone = new ArrayList<>(current);
-            mode=Mode.NONE;
+            mode = Mode.NONE;
             ButtonWidget button = new ButtonWidget(Window.WIDTH - 100, 10, (b2) -> {
                 StringBuilder sb = new StringBuilder();
                 sb.append(LevelParser.CURRENT_VERSION);
@@ -117,7 +115,7 @@ public class LevelDesigner extends Scene implements EventListener {
         add(debugText);
         add(trashcan);
         add(createTypePlacer("/assets/tiles/tile.png", 50, 10, new Tile()));
-        add(createTypePlacer("/assets/tiles/bulb.png", 90, 11, new Bulb(0,0)));
+        add(createTypePlacer("/assets/tiles/bulb.png", 90, 11, new Bulb(0, 0)));
         add(export);
 
         objectOptions = new ObjectOptionWidget(new LinkedList<>(), Window.WIDTH - 100, 10, 30, this);
@@ -139,7 +137,7 @@ public class LevelDesigner extends Scene implements EventListener {
 
     @EventTarget(MouseClickEvent.class)
     public void click(MouseClickEvent event) {
-        if(!inEditMode)
+        if (!inEditMode)
             return;
         if (event.isLeftClick()) {
             if (mode != Mode.NONE && mode != null && !exporting) {
@@ -147,13 +145,13 @@ public class LevelDesigner extends Scene implements EventListener {
                     case PLACE -> {
                         GloomGame.getInstance().getWindow().showCursor(true);
                         GameObject nObject = cursorType.clone().apply((g) -> {
-                                    g.setX(cursorX);
-                                    g.setY(cursorY);
-                                    g.setWidth(32);
-                                    g.setHeight(32);
+                            g.setX(cursorX);
+                            g.setY(cursorY);
+                            g.setWidth(32);
+                            g.setHeight(32);
 
-                                    debugText.setText(g.getClass().getSimpleName() + "(X: " + cursorX + " Y: " + cursorY + " W: " + g.getWidth() + " H: " + g.getHeight() + ")");
-                                });
+                            debugText.setText(g.getClass().getSimpleName() + "(X: " + cursorX + " Y: " + cursorY + " W: " + g.getWidth() + " H: " + g.getHeight() + ")");
+                        });
                         current.add(nObject);
 
                         objectOptions.setOptions(genBasicObjectOptions(nObject));
@@ -182,7 +180,7 @@ public class LevelDesigner extends Scene implements EventListener {
             }
         }
 
-        if(getSelected() != null) {
+        if (getSelected() != null) {
             for (Drawable d : getOfType(ObjectOptionWidget.class)) {
                 ObjectOptionWidget oow = (ObjectOptionWidget) d;
                 if (oow.isOver(event.getX(), event.getY()))
@@ -199,7 +197,7 @@ public class LevelDesigner extends Scene implements EventListener {
             if (mode == Mode.DRAG || mode == Mode.PLACE) {
                 copy.addFirst(cursorDrawable);
             }
-            if(!exporting)
+            if (!exporting)
                 copy.addAll(getDrawables());
             Renderer.getInstance().render(copy);
         } else {
@@ -235,12 +233,13 @@ public class LevelDesigner extends Scene implements EventListener {
 
 
     }
+
     public GameObject getSelected() {
         if (current.isEmpty())
             return null;
         if (exporting)
             return new Tile();
-        return current.get(current.size()-1);
+        return current.get(current.size() - 1);
     }
 
     enum Mode {

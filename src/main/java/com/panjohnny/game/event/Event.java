@@ -16,21 +16,22 @@ public abstract class Event<D> {
     private D data;
 
     /**
+     * @param eventCaller The class that is calling the event.
+     * @param data        Data that is being carried by the event.
+     */
+    public Event(Class<?> eventCaller, D data) {
+        this.eventCaller = eventCaller;
+        this.data = data;
+    }
+
+    /**
      * Sets handle.
+     *
      * @param eventHandler The handler that handlers the event.
      * @return It self.
      */
     public Event<?> handle(EventHandler eventHandler) {
         this.eventHandler = eventHandler;
         return this;
-    }
-
-    /**
-     * @param eventCaller The class that is calling the event.
-     * @param data Data that is being carried by the event.
-     */
-    public Event(Class<?> eventCaller, D data) {
-        this.eventCaller = eventCaller;
-        this.data = data;
     }
 }

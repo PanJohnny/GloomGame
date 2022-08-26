@@ -22,6 +22,7 @@ import java.util.List;
  * This class is an interface. It is used by the classes that wants to listen to methods. When the class is registered we store all the events listened to int the hashmap.
  * When the event is fired we check if the event is registered in the hashmap. If it is, we call the method.
  * We also do some witchcraft to prevent ClassCastException. :D
+ *
  * @author PanJohnny
  */
 public interface EventListener {

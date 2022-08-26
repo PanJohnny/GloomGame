@@ -1,6 +1,5 @@
 package com.panjohnny.game.util;
 
-import com.google.common.collect.ImmutableList;
 import com.panjohnny.game.GloomGame;
 
 import java.awt.image.BufferedImage;
@@ -13,12 +12,12 @@ public final class ImageUtil {
         int height = 0;
 
         for (BufferedImage image : images) {
-            if(image.getWidth()>width) {
-                width=image.getWidth();
+            if (image.getWidth() > width) {
+                width = image.getWidth();
             }
 
-            if(image.getHeight()>height) {
-                height=image.getHeight();
+            if (image.getHeight() > height) {
+                height = image.getHeight();
             }
         }
 
