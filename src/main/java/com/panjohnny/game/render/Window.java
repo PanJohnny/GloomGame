@@ -125,6 +125,7 @@ public class Window implements Jsonable {
         }
     }
 
+    // TODO fix this and remove this later
     public float multiply(float original) {
         return original * ((frame.getWidth() / (float) Window.WIDTH) + (frame.getHeight() / (float) Window.HEIGHT)) / 2f;
     }
